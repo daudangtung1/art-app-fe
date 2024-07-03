@@ -1,0 +1,150 @@
+.contact__section {
+    padding-top: 80px;
+
+    .contact__section--main {
+        padding-top: 48px;
+        padding-bottom: 48px;
+        background: #FAFAFA;
+
+        .contact__section--main--info {
+            box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 32px 24px 24px 32px;
+            margin-bottom: 24px;
+
+            h2 {
+                color: #fe0000;
+            }
+
+            .contact__section--main--info--list {
+                margin-top: 22px;
+
+                .contact__section--main--info--list--item {
+                    margin-top: 24px;
+
+                    .contact__section--main--info--list--item--logo {
+                        background: #007580;
+                        width: 40px;
+                        height: 40px;
+
+                        img {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+
+                    .contact__section--main--info--list--item--info {
+                        width: calc(100% - (40px + 16px));
+                        margin-left: 16px;
+
+                        p {
+                            color: unset;
+                            line-height: 26px;
+                            margin-top: 8px;
+                        }
+
+                        a {
+                            margin-top: 8px;
+                        }
+                    }
+
+                    >a {
+                        box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.2);
+                        width: 42px;
+                        height: 42px;
+                        margin-left: 20px;
+                        color: #4A4A4A;
+                    }
+
+                    .bg-twitter {
+                        background: #5A99EC;
+                    }
+
+                    .bg-youtube {
+                        background: #DA0000;
+                    }
+                }
+
+                .contact__section--main--info--list--item:first-child {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        .contact__section--main--form {
+            border-radius: 16px;
+            padding: 32px 24px 24px 32px;
+            box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+
+            .contact__section--main--form--main {
+                margin: 22px auto 0 auto;
+
+                .contact__section--main--form--main--form {
+                    .contact__section--main--form--main--form--item {
+                        margin: 22px auto 0 auto;
+
+                        .contact__section--main--form--main--form--item--input {
+                            input {
+                                height: 42px;
+                                border: 1px solid #DCDCDC;
+                                border-radius: 5px;
+                                padding: 0 15px;
+                            }
+
+                            textarea {
+                                border: 1px solid #DCDCDC;
+                                border-radius: 5px;
+                                padding: 12px 15px;
+                                outline: 0;
+                            }
+
+                            input:focus {
+                                outline: none;
+                            }
+                        }
+
+                        .contact__section--main--form--main--form--item--child {
+                            width: 50%;
+                        }
+
+                        .contact__section--main--form--main--form--item--child:first-child {
+                            margin-right: 23.5px;
+                        }
+
+                        button {
+                            transition: all 0.5s ease 0s;
+                            height: 42px;
+                            padding: 0 20px 0 21px;
+                            border: 0;
+                            border-radius: 100px;
+                        }
+
+                        button:hover {
+                            background: #005E66;
+                        }
+                    }
+
+                    .contact__section--main--form--main--form--item:first-child {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .contact__section--main--form--main--form--item:nth-child(2) {
+        flex-direction: column;
+
+        .contact__section--main--form--main--form--item--child {
+            width: 100% !important;
+            margin-right: 0 !important;
+        }
+
+        .contact__section--main--form--main--form--item--child:last-child {
+            margin-top: 24px;
+        }
+    }
+}

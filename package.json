@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "cropperjs": "^1.6.2",
         "dart-sass": "^1.25.0"
     },
     "scripts": {

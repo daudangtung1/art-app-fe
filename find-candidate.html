@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="public/css/app.css">
+    <link rel="stylesheet" href="public/css/app-render.css">
+    <style>
+        :root {
+            --color-primary: #007580;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <section class="search-candidate__header position-relative">
+        <div class="container">
+            <div class="search-candidate__header--title text-center">
+                <h1 class="f-28 text-white font-weight-500">
+                    Tìm ứng viên 3s, ứng viên phù hợp với bạn trên toàn quốc.
+                </h1>
+            </div>
+            <div class="search-candidate__header--form position-relative d-flex justify-content-end w-100"
+                id="search_candidate__form">
+                <div class="search-candidate__header--form--list mb-0 bg-white d-flex flex-row flex-wrap">
+                    <div class="search-candidate__header--form--list--item mb-0 position-relative">
+                        <div class="search-candidate__header--form--list--item--icon position-absolute f-20 main_color">
+                            <i class="far fa-search"></i>
+                        </div>
+                        <input type="text" name="keyword" id="keyword" placeholder="Nhập tên ứng viên, vị trí ứng tuyển"
+                            class="f-14 w-100 h-100">
+                    </div>
+                    <div class="search-candidate__header--form--list--item mb-0 position-relative">
+                        <div class="search-candidate__header--form--list--item--icon position-absolute f-20 main_color">
+                            <i class="fa fa-map-marker"></i>
+                        </div>
+                        <select id="location" name="location">
+                            <option value="1">val 1</option>
+                            <option value="2">val 2</option>
+                            <option value="3">val 3</option>
+                        </select>
+                    </div>
+                    <div class="search-candidate__header--form--list--item mb-0 position-relative">
+                        <div class="search-candidate__header--form--list--item--icon position-absolute f-20 main_color">
+                            <i class="far fa-star"></i>
+                        </div>
+                        <select id="exprience" name="exprience">
+                            <option value="1">val 1</option>
+                            <option value="2">val 2</option>
+                            <option value="3">val 3</option>
+                        </select>
+                    </div>
+                    <div class="search-candidate__header--form--list--item mb-0 position-relative">
+                        <div class="search-candidate__header--form--list--item--icon position-absolute f-20 main_color">
+                            <i class="far fa-dollar"></i>
+                        </div>
+                        <select id="salary" name="salary">
+                            <option value="1">val 1</option>
+                            <option value="2">val 2</option>
+                            <option value="3">val 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search-candidate__header--form--button">
+                    <button type="submit" class="btn-find-candidte fw-400 mt-0 text-white w-100">
+                        Tìm kiếm
+                    </button>
+                </div>
+            </div>
+            <div class="search-candidate__header--action d-flex align-items-center justify-content-between">
+                <div class="search-candidate__header--action--count">
+                    <div class="btn-find-candidte-no-hover font-weight-light">
+                        <span class="text-white">
+                            Tổng
+                            <span>1,231</span>
+                            kết quả
+                        </span>
+                    </div>
+                </div>
+                <div class="search-candidate__header--action--filter d-flex align-items-end">
+                    <a href="javascript:void(0)" class="f-10 reset-filter text-white font-weight-500 d-none"
+                        id="reset_advande_filter">Xóa lọc nâng cao</a>
+                    <a href="javascript:void(0)" class="btn-find-candidte text-white" id="toggle_advance_filter">
+                        <i class="fa fa-filter"></i>
+                        <span>Lọc nâng cao</span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="search-candidate__header--advance d-none flex-wrap">
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="fa fa-briefcase" aria-hidden="true"></i>
+                    </div>
+                    <select name="industry_category_id" id="industry_category_id">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="fa fa-user-times" aria-hidden="true"></i>
+                    </div>
+                    <select name="working_type" id="working_type">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="fa fa-level-up" aria-hidden="true"></i>
+                    </div>
+                    <select name="level" id="level">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="far fa-clock" aria-hidden="true"></i>
+                    </div>
+                    <select name="time_published" id="time_published">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="fa fa-transgender" aria-hidden="true"></i>
+                    </div>
+                    <select name="gender" id="gender">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+                <div class="search-candidate__header--advance--item position-relative">
+                    <div class="search-candidate__header--advance--item--icon position-absolute main_color">
+                        <i class="fa fa-transgender" aria-hidden="true"></i>
+                    </div>
+                    <select name="education" id="education">
+                        <option value="1">val 1</option>
+                        <option value="2">val 2</option>
+                        <option value="3">val 3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="search-candidate__main">
+        <div class="container">
+            <div class="search-candidate__main--layout bg-white">
+                <div class="row">
+                    <div class="col-lg-8 col-md-9">
+                        <div class="search-candidate__main--layout--main">
+                            <div class="search-candidate__main--layout--main--header d-flex justify-content-between">
+                                <div class="search-candidate__main--layout--main--header--left">
+                                    <h1 class="f-20 font-weight-500 main_color">Tuyển dụng 1,232 ứng viên Hà Nội đi làm
+                                        ngay</h1>
+                                    <div
+                                        class="search-candidate__main--layout--main--header--left--count d-inline-block">
+                                        <span class="fw-400">
+                                            Tổng <span class="font-weight-500 main_color">1,232</span> kết quả
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="search-candidate__main--layout--main--header--right">
+                                    <select name="order_by" id="order_by" class="f-14">
+                                        <option value="1" selected>Mới nhất</option>
+                                        <option value="2">Cũ nhất</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="search-candidate__main--layout--main--list">
+                                <div
+                                    class="search-candidate__main--layout--main--item d-block position-relative bg-white">
+                                    <div class="mb-0 position-relative d-flex">
+                                        <div
+                                            class="search-candidate__main--layout--main--item--logo d-flex align-items-center justify-content-center overflow-hidden">
+                                            <a href="#" target="_blank" title="">
+                                                <img src="https://job3s.vn/pictures/uv/2024/07/02/avatar1719884091.png"
+                                                    alt="Logo">
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="search-candidate__main--layout--main--item--info d-flex position-relative">
+                                            <div class="search-candidate__main--layout--main--item--info--left">
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--left--title">
+                                                    <a href="#" class="mb-2 d-inline-block" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="Thu trang">
+                                                        <h3 class="mb-0 font-weight-500 f-20 pr-0 main_color">Thu Trang
+                                                        </h3>
+                                                    </a>
+                                                    <div class="tooltip float-end" data-id="123456">
+                                                        <span class="heart">
+                                                            <i class="far fa-bookmark float-end" aria-hidden="true"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                aria-label="Lưu việc làm này"
+                                                                data-bs-original-title="Lưu việc làm này"></i>
+                                                        </span>
+                                                        <span class="tooltiptext">
+                                                            Lưu ứng viên này
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--left--status f-12 fw-400 text-white d-inline-block">
+                                                    Đang tìm việc
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="fa fa-briefcase"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">Digital
+                                                        Marketing Thực tập sinh</span>
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="fal fa-location-dot"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">Hà
+                                                        Nội</span>
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="far fa-clock"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">
+                                                        Cập nhật <span> 47 phút </span> trước
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="search-candidate__main--layout--main--item--info--right">
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--right--list">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--right--list--item d-block">
+                                                        <h4 class="f-16">Kinh nghiệm:<span>Dưới 1 năm</span></h4>
+                                                        <ul>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>Quản lý lớp và trợ giảng môn Toán Trung tâm
+                                                                    apolloking</span>
+                                                            </li>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>Quản lý lớp và trợ giảng môn Toán Trung tâm
+                                                                    apolloking</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--right--list--item d-block">
+                                                        <h4 class="f-16">Học vấn</h4>
+                                                        <ul>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>
+                                                                    Chuyên Ngành
+                                                                    <b>Ngành Kinh Tế</b>  -  Xếp Loại: GPA: 3.5 - Đại
+                                                                    Học
+                                                                    Kinh Tế -  ĐHqghn
+                                                                </span>
+                                                            </li>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>
+                                                                    Chuyên Ngành
+                                                                    <b>Ngành Kinh Tế</b>  -  Xếp Loại: GPA: 3.5 - Đại
+                                                                    Học
+                                                                    Kinh Tế -  ĐHqghn
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="search-candidate__main--layout--main--item d-block position-relative bg-white">
+                                    <div class="mb-0 position-relative d-flex">
+                                        <div
+                                            class="search-candidate__main--layout--main--item--logo d-flex align-items-center justify-content-center overflow-hidden">
+                                            <a href="#" target="_blank" title="">
+                                                <img src="https://job3s.vn/pictures/uv/2024/07/02/avatar1719884091.png"
+                                                    alt="Logo">
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="search-candidate__main--layout--main--item--info d-flex position-relative">
+                                            <div class="search-candidate__main--layout--main--item--info--left">
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--left--title">
+                                                    <a href="#" class="mb-2 d-inline-block" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="Thu trang">
+                                                        <h3 class="mb-0 font-weight-500 f-20 pr-0 main_color">Thu Trang
+                                                        </h3>
+                                                    </a>
+                                                    <div class="tooltip float-end" data-id="123456">
+                                                        <span class="heart">
+                                                            <i class="far fa-bookmark float-end" aria-hidden="true"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                aria-label="Lưu việc làm này"
+                                                                data-bs-original-title="Lưu việc làm này"></i>
+                                                        </span>
+                                                        <span class="tooltiptext">
+                                                            Lưu ứng viên này
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--left--status f-12 fw-400 text-white d-inline-block">
+                                                    Đang tìm việc
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="fa fa-briefcase"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">Digital
+                                                        Marketing Thực tập sinh</span>
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="fal fa-location-dot"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">Hà
+                                                        Nội</span>
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--left--icon">
+                                                        <i class="far fa-clock"></i>
+                                                    </div>
+                                                    <span
+                                                        class="search-candidate__main--layout--main--item--info--left--span f-13 fw-400">
+                                                        Cập nhật <span> 47 phút </span> trước
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="search-candidate__main--layout--main--item--info--right">
+                                                <div
+                                                    class="search-candidate__main--layout--main--item--info--right--list">
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--right--list--item d-block">
+                                                        <h4 class="f-16">Kinh nghiệm:<span>Dưới 1 năm</span></h4>
+                                                        <ul>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>Quản lý lớp và trợ giảng môn Toán Trung tâm
+                                                                    apolloking</span>
+                                                            </li>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>Quản lý lớp và trợ giảng môn Toán Trung tâm
+                                                                    apolloking</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div
+                                                        class="search-candidate__main--layout--main--item--info--right--list--item d-block">
+                                                        <h4 class="f-16">Học vấn</h4>
+                                                        <ul>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>
+                                                                    Chuyên Ngành
+                                                                    <b>Ngành Kinh Tế</b>  -  Xếp Loại: GPA: 3.5 - Đại
+                                                                    Học
+                                                                    Kinh Tế -  ĐHqghn
+                                                                </span>
+                                                            </li>
+                                                            <li class="d-flex align-items-start f-14">
+                                                                <i class="fa fa-briefcase f-12"></i>
+                                                                <span>
+                                                                    Chuyên Ngành
+                                                                    <b>Ngành Kinh Tế</b>  -  Xếp Loại: GPA: 3.5 - Đại
+                                                                    Học
+                                                                    Kinh Tế -  ĐHqghn
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-3">
+                        <div class="search-candidate__main--layout--sidebar">
+                            <div class="search-candidate__main--layout--sidebar--banner">
+                                <a rel="dofollow" href="#" target="_blank">
+                                    <img src="https://cdn.job3s.vn/images/banner_search.jpg" alt="" title="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // select 2
+            $('#location').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#exprience').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#salary').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#industry_category_id').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#working_type').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#level').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#time_published').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#gender').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+            $('#education').select2({
+                "language": {
+                    "noResults": function () {
+                        return "Không có kết quả phù hợp";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                },
+            });
+
+            // toggle advance filter
+            $('#toggle_advance_filter').on('click', function () {
+                $(this).find('i:last-child').toggleClass('fa-angle-down fa-angle-up');
+                $('.search-candidate__header--advance').toggleClass('d-none d-flex');
+            });
+        });
+    </script>
+</body>
+
+</html>
