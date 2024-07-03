@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="public/css/app.css">
+    <link rel="stylesheet" href="public/css/app-render.css">
+    <style>
+        :root {
+            --color-primary: #007580;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="breadcrumb" class="uc__detail--breadcrumb mt-5 pt-5">
+        <div class="container">
+            <ul class="nav d-flex">
+                <li class="nav-item text-dark">
+                    <a class="text-highlight bold" href="/danh-sach-cong-ty">Danh sách Công ty</a>
+                </li>
+                <li class="nav-item text-secondary">
+                    <span>
+                        <i class="far fa-angle-right" aria-hidden="true"></i>
+                        Thông tin công ty &amp; tin tuyển dụng từ Coca-Cola Việt Nam
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="uc__detail--banner">
+        <div class="container">
+            <div class="uc__detail--banner--inner overflow-hidden">
+                <div class="uc__detail--banner--cover overflow-hidden">
+                    <img draggable="false" src="pictures/2023/07/16/Rectangle 121.jpg"
+                        onerror="this.onerror=null;this.src='https://cdn.job3s.vn/pictures/bannerAI_company.jpg'" alt=""
+                        class="cover-img w-100 h-100 mw-100 d-block" width="100%">
+                </div>
+                <div class="uc__detail--banner--logo position-relative">
+                    <div
+                        class="uc__detail--banner--logo--img flex justify-content-center align-items-center bg-white overflow-hidden">
+                        <img draggable="false"
+                            src="https://cdn.job3s.vn/pictures/2023/07/16/x180/logo142028_1697192930.webp"
+                            onerror="this.onerror=null;this.src='https://cdn.job3s.vn/images/img_news_ts.png'"
+                            alt="Công ty Coca-Cola Việt Nam" class="img-responsive">
+                    </div>
+                </div>
+                <div class="uc__detail--banner--info d-flex align-items-center position-relative">
+                    <div class="uc__detail--banner--info--detail mw-100">
+                        <h1 data-toggle="tooltip" title="" class="uc__detail--banner--info--detail--name text-white"
+                            data-original-title="Công ty Coca-Cola Việt Nam">
+                            Công ty Coca-Cola Việt Nam
+                            <br>
+                        </h1>
+                        <span class="text-white line_h23 pb-2 d-none">
+                            Đồ uống
+                        </span>
+
+                        <div class="uc__detail--banner--info--subdetail mt-2">
+                            <div class="d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hidden">
+                                    Quận Thủ Đức, Hồ Chí Minh
+                                </span>
+                            </div>
+                            <div class="d-none d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hidden">
+                                    Chưa cập nhật
+                                </span>
+                            </div>
+                            <div class="d-none d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-globe" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hidden">
+                                    Chưa cập nhật
+                                </span>
+                            </div>
+                            <div class="d-none d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hidden">
+                                    <?= (isset($_SESSION['UID']) && isset($_SESSION['user_role'])) ? (($row['usc_phone'] != "") ? $row['usc_phone'] : "Chưa cập nhật") : "*********" ?>
+                                </span>
+                            </div>
+                            <div class="d-none d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hidden">
+                                    <?= (isset($_SESSION['UID']) && isset($_SESSION['user_role'])) ? (($row['usc_email'] != "") ? $row['usc_email'] : "Chưa cập nhật") : "*********" ?>
+                                </span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="uc__detail--banner--info--subdetail--icon text-white">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    class="uc__detail--banner--info--subdetail--text text-white d-block f-14 font-weight-400 overflow-hiddent">
+                                    <span id="count_follow_user">
+                                        49
+                                    </span>
+                                    người theo dõi
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uc__detail--banner--info--follow">
+                        <a href="javascript:void(0)"
+                            class="btn-follow <?= isset($_SESSION['user_role']) && $_SESSION['user_role'] == ROLE::UV ? '' : 'show_login' ?>"
+                            data-type="<?= $_SESSION['user_role'] ?>"
+                            id="<?= isset($_SESSION['user_role']) && $_SESSION['user_role'] == ROLE::UV ? 'follow_company' : '' ?>"
+                            data-status="<?= $check_uv == false ? 'like' : 'dislike' ?>" data-user_id="<?= $UID ?>"
+                            data-company_id="<?= $row['usc_id'] ?>">
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span>&nbsp;Theo dõi công ty</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="uc__detail--company">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="us__detail--company--introduce">
+                        <h2 class="f-18 text-white fw-6 m-0">Giới thiệu Công ty Coca-Cola Việt Nam</h2>
+                        <div class="us__detail--company--introduce--content">
+                            <p>
+                                Ngày 8 tháng 5 năm 1886, Tiến sĩ John Pemberton đã phục vụ sản phẩm Coca‑Cola đầu tiên
+                                trên thế giới tại nhà thuốc Jacobs Pharmacy ở thành phố Atlanta, bang Georgia, Mỹ. Bắt
+                                đầu từ một thức uống mang tính biểu tượng, chúng tôi dần phát triển thành một công ty
+                                nước giải khát toàn diện. Mỗi ngày có hơn 2,1 tỉ sản phẩm của chúng tôi được người tiêu
+                                dùng thưởng thức tại hơn 200 quốc gia và vùng lãnh thổ. Chính 700.000 nhân viên và hơn
+                                225 đối tác đóng chai của Công ty Coca‑Cola trên toàn cầu đã giúp chúng tôi mang các sản
+                                phẩm giải khát đến cho người dùng trên toàn thế giới.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="us__detail--company--job">
+                        <h2 class="f-18 text-white fw-6 m-0">Tin tuyển dụng Mộc Trà Beauty</h2>
+                        <div class="us__detail--company--job--list position-relative bg-white overflow-hidden">
+                            <div class="position-relative px-3">
+                                <div class="m-1 pt-3">
+                                    <div class="us__detail--company--job--list--item flex flex-column">
+                                        <div class="d-flex">
+                                            <div
+                                                class="us__detail--company--job--list--item--logo d-flex justify-content-center align-items-center overflow-hidden">
+                                                <a rel="nofollow" href="#" target="_blank">
+                                                    <img onerror="this.onerror=null;this.src='https://cdn.job3s.vn/images/img_news_ts.png';"
+                                                        src="/pictures/2024/03/12/x180/logo143491_1710215927.webp"
+                                                        data-src="/pictures/2024/03/12/x180/logo143491_1710215927.webp"
+                                                        alt="Mộc Trà Beauty " title="Mộc Trà Beauty "
+                                                        class="br_16 lazyloaded">
+                                                </a>
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--job f-14">
+                                                <a rel="nofollow" href="#" target="_blank" class="main_color"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="[hồ chí minh] mộc trà beauty tuyển nhân viên kinh doanh/quản lý team 5 người hợp đồng lương từ 4 triệu đến 15 triệu">
+                                                    <h3 class="text-capitalize f-16 ellipsis mb-0">
+                                                        <span>[hồ chí minh] mộc trà beauty tuyển nhân viên kinh
+                                                            doanh/quản
+                                                            lý team 5 người hợp đồng lương từ 4 triệu đến 15
+                                                            triệu</span>
+                                                    </h3>
+                                                </a>
+                                                <a rel="nofollow" href="javascript:void(0)" class="ellipsis">
+                                                    <p class="ellipsis f-12 text-uppercase mb-0">
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Mộc Trà Beauty">Mộc Trà Beauty</span>
+                                                    </p>
+                                                </a>
+                                                <div class="d-flex f-12 ellipsis">
+                                                    <span>Hạn nộp: 04/07/2024</span>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="us__detail--company--job--list--item--save-job cursor-pointer me-2 show_login">
+                                                <div class="d-inline-block position-relative tooltip">
+                                                    <span>
+                                                        <i class="far fa-bookmark float-right" aria-hidden="true"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Lưu việc làm này"></i>
+                                                    </span>
+                                                    <span class="tooltiptext d-none">
+                                                        <?= ($active == 'active') ? 'Bỏ lưu việc làm này' : 'Lưu việc làm này'?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="us__detail--company--job--list--item--info d-flex flex-wrap">
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top"
+                                                data-bs-original-title="Hồ Chí Minh: Quận Bình Thạnh">
+                                                Hồ Chí Minh
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-original-title="4 - 15 triệu">
+                                                4 - 15 triệu
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-original-title="Kinh nghiệm: Dưới 1 năm">
+                                                Kinh nghiệm: Dưới 1 năm
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-1 pt-3">
+                                    <div class="us__detail--company--job--list--item flex flex-column">
+                                        <div class="d-flex">
+                                            <div
+                                                class="us__detail--company--job--list--item--logo d-flex justify-content-center align-items-center overflow-hidden">
+                                                <a rel="nofollow" href="#" target="_blank">
+                                                    <img onerror="this.onerror=null;this.src='https://cdn.job3s.vn/images/img_news_ts.png';"
+                                                        src="/pictures/2024/03/12/x180/logo143491_1710215927.webp"
+                                                        data-src="/pictures/2024/03/12/x180/logo143491_1710215927.webp"
+                                                        alt="Mộc Trà Beauty " title="Mộc Trà Beauty "
+                                                        class="br_16 lazyloaded">
+                                                </a>
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--job f-14">
+                                                <a rel="nofollow" href="#" target="_blank" class="main_color"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="[hồ chí minh] mộc trà beauty tuyển nhân viên kinh doanh/quản lý team 5 người hợp đồng lương từ 4 triệu đến 15 triệu">
+                                                    <h3 class="text-capitalize f-16 ellipsis mb-0">
+                                                        <span>[hồ chí minh] mộc trà beauty tuyển nhân viên kinh
+                                                            doanh/quản
+                                                            lý team 5 người hợp đồng lương từ 4 triệu đến 15
+                                                            triệu</span>
+                                                    </h3>
+                                                </a>
+                                                <a rel="nofollow" href="javascript:void(0)" class="ellipsis">
+                                                    <p class="ellipsis f-12 text-uppercase mb-0">
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Mộc Trà Beauty">Mộc Trà Beauty</span>
+                                                    </p>
+                                                </a>
+                                                <div class="d-flex f-12 ellipsis">
+                                                    <span>Hạn nộp: 04/07/2024</span>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="us__detail--company--job--list--item--save-job cursor-pointer me-2 show_login">
+                                                <div class="d-inline-block position-relative tooltip">
+                                                    <span>
+                                                        <i class="far fa-bookmark float-right" aria-hidden="true"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Lưu việc làm này"></i>
+                                                    </span>
+                                                    <span class="tooltiptext d-none">
+                                                        <?= ($active == 'active') ? 'Bỏ lưu việc làm này' : 'Lưu việc làm này'?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="us__detail--company--job--list--item--info d-flex flex-wrap">
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top"
+                                                data-bs-original-title="Hồ Chí Minh: Quận Bình Thạnh">
+                                                Hồ Chí Minh
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-original-title="4 - 15 triệu">
+                                                4 - 15 triệu
+                                            </div>
+                                            <div class="us__detail--company--job--list--item--info--item text-nowrap d-inline-flex f-12 font-weight-400"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-original-title="Kinh nghiệm: Dưới 1 năm">
+                                                Kinh nghiệm: Dưới 1 năm
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="us__detail--company--introduce">
+                        <h4 class="f-18 text-white fw-6 m-0">Thông tin liên hệ</h4>
+                        <div class="us__detail--company--introduce--item--content">
+                            <div class="us__detail--company--introduce--content--item--title flex align-items-center">
+                                <i class="fal fa-location-dot" aria-hidden="true"></i>
+                                <span>Địa chỉ</span>
+                            </div>
+                            <div class="us__detail--company--introduce--content--item--content f-14 font-weight-400">
+                                Số 485, Đường Xa Lộ Hà Nội, Phường Linh Trung - Quận Thủ Đức - Hồ Chí Minh
+                            </div>
+                        </div>
+                    </div>
+                    <div class="us__detail--company--introduce">
+                        <h4 class="f-18 text-white fw-6 m-0">Chia sẻ công ty tới bạn bè</h4>
+                        <div class="us__detail--company--introduce--item--content">
+                            <p class="f-14 fw-500">Sao chép đường dẫn</p>
+                            <div class="copy_box mb-3">
+                                <div class="link d-flex align-items-center">
+                                    <span class="link_copy">https://job3s.vn/cong-ty-coca-cola-ntd142028</span>
+                                    <div class="copyeid" onclick="Copyied(this,'.link_copy')">
+                                        <img src="https://cdn.job3s.vn/images/copy_primary.png"
+                                            alt="Sao chép đường dẫn">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="f-14 fw-500">Chia sẻ qua mạng xã hội</p>
+                            <div class="sharing">
+                                <div class="d-flex flex-wrap mt-0">
+                                    <a rel="nofollow" class="btn_facebook text-white" href="#">
+                                        <i class="fa-brands fa-facebook-f"></i>
+                                    </a>
+                                    <a rel="nofollow" class="btn_linkedin text-white" href="#">
+                                        <i class="fa-brands fa-linkedin-in"></i>
+                                    </a>
+                                    <a rel="nofollow" class="btn_twitter text-white" href="#">
+                                        <i class="fa-brands fa-twitter"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="login-popup position-fixed d-flex justify-content-center align-items-center" id="login_popup">
+        <div class="login-popup__main m-auto bg-white">
+            <div class="login-popup__main--header d-flex justify-content-center align-items-center position-relative">
+                <div class="login-popup__main--header--text f-22 font-weight-bold">
+                    Vui lòng đăng nhập để thực hiện chức năng này
+                </div>
+                <div class="login-popup__main--header--close position-absolute cursor-pointer">
+                    <img src="https://cdn.job3s.vn/images/close_gray.png" alt="">
+                </div>
+            </div>
+            <div class="login-popup__main--content p-3">
+                <form method="POST" id="form_login_uv" novalidate="novalidate">
+                    <div class="form-group">
+                        <span class="f-16 font-weight-bold">Email </span>
+                        <span class="login-popup__main--content--span--required">*</span>
+                        <div class="login-popup__main--content--input d-flex align-items-center w-100">
+                            <input type="email" id="account" name="account" placeholder="Nhập email của bạn"
+                                class="f-15">
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <span class="f-16 font-weight-bold">Mật khẩu </span>
+                        <span class="login-popup__main--content--span--required">*</span>
+                        <div
+                            class="login-popup__main--content--input d-flex align-items-center w-100 position-relative">
+                            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu"
+                                class="f-15">
+                            <div
+                                class="d-flex align-items-center cursor-pointer position-absolute login-popup__main--content--input--toggle">
+                                <img src="https://cdn.job3s.vn/images/eve_close.png" alt="Mật khẩu" class="d-block">
+                                <img src="https://cdn.job3s.vn/images/eve_open.png" alt="Mật khẩu" class="d-none">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="login-popup__main--content--forgot-password f-14 float-right" href="#">Quên mật khẩu?</a>
+                    <div class="login-popup__main--content--submit">
+                        <button type="submit"
+                            class="cursor-pointer w-100 btn_primary d-inline-block font-weight-bold text-white">Đăng
+                            nhập</button>
+                    </div>
+                    <div class="login-popup__main--content--another-login-text">
+                        <p class="f-14 text-center font-weight-400 mb-0">Hoặc đăng nhập bằng</p>
+                    </div>
+                    <div class="login-popup__main--content--social d-flex w-100 justify-content-between">
+                        <div class="login-popup__main--content--social--item">
+                            <button type="button"
+                                class="text-center w-100 font-weight-bold cursor-pointer d-inline-block button text-white bg-fb">Facebook</button>
+                        </div>
+                        <div class="login-popup__main--content--social--item">
+                            <button type="button"
+                                class="text-center w-100 font-weight-bold cursor-pointer d-inline-block button text-white bg-gg">Google</button>
+                        </div>
+                    </div>
+                    <ul class="login-popup__main--content--info-security">
+                        <li class="f-14">
+                            <img width="16" height="16" src="https://cdn.job3s.vn/images/seal_check_success.png">
+                            Bảo mật thông tin cá nhân.
+                        </li>
+                        <li class="f-14">
+                            <img width="16" height="16" src="https://cdn.job3s.vn/images/seal_check_success.png">
+                            Cam kết không làm phiền và spam email.
+                        </li>
+                    </ul>
+                    <div class="login-popup__main--content--register d-flex justify-content-start align-items-center">
+                        <span class="f-14 font-weight-400">
+                            Bạn chưa có tài khoản?
+                            <a href="#" class="f-14 font-weight-bold">Đăng ký ngay</a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

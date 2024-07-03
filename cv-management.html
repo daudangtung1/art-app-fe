@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="public/css/app.css">
+    <link rel="stylesheet" href="public/css/app-render.css">
+    <style>
+        :root {
+            --color-primary: #007580;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <header class="header-wrap header-type-11 has-bg">
+        <form id="logout-form" action="http://job3s_v2.test/logout" method="POST" style="display: none;"><input
+                type="hidden" name="_token" value="KH4y8L704flOHra6KroJtKbqM9ZncjR6dnHpkxDw"></form>
+        <div class="header-wrap-inner">
+            <div class="header-top-row">
+                <div class="container">
+                    <div class="row flex-row flex-nowrap justify-content-between general-header-inner">
+                        <div class="header-column-left whb-column whb-visible-lg mr-4"><a
+                                title="Job3s - Tuyển dụng, tìm việc nhanh, việc làm 24h mới nhất" href="/"
+                                class="header-logo" style="max-width: 180px;"><img
+                                    src="/uploads/images/setting/dung-bui/2024/06/04/logo-1717495176.svg?ver=1718761994"
+                                    alt="VNtre - Đọc tin tức 24h trong ngày, cập nhật những tin mới nhanh nhất đa dạng cho mọi chủ đề, tin tức online mỗi ngày về giải trí, kinh tế, thể thao, công nghệ, đời sống..."></a>
+                        </div>
+                        <div class="right-menu flex-row flex-nowrap justify-content-between whb-hidden-mobile">
+                            <nav class="navbar navbar-expand-sm navbar-expand-full">
+                                <ul class="navbar-nav menu-container horizontal-megamenu">
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/tin-tuc"
+                                            title="Tin tức" data-link="http://job3s_v2.test/tin-tuc"
+                                            class="menu-link"><span class="nav-link-text">Tin tức</span> <i
+                                                class="menu_icon_down"></i></a>
+                                        <ul role="menu" class="sub-menu">
+                                            <li><a href="http://job3s_v2.test/doi-song" title="Đời Sống"
+                                                    data-link="http://job3s_v2.test/doi-song" class="text-capitalize">
+                                                    Đời Sống
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/kham-pha" title="Khám Phá"
+                                                    data-link="http://job3s_v2.test/kham-pha" class="text-capitalize">
+                                                    Khám Phá
+                                                </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/giai-tri"
+                                            title="Giải trí" data-link="http://job3s_v2.test/giai-tri"
+                                            class="menu-link"><span class="nav-link-text">Giải trí</span> <i
+                                                class="menu_icon_down"></i></a>
+                                        <ul role="menu" class="sub-menu">
+                                            <li><a href="http://job3s_v2.test/dien-anh" title="Điện ảnh"
+                                                    data-link="http://job3s_v2.test/dien-anh" class="text-capitalize">
+                                                    Điện ảnh
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/tro-choi" title="Trò Chơi"
+                                                    data-link="http://job3s_v2.test/tro-choi" class="text-capitalize">
+                                                    Trò Chơi
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/am-nhac" title="Âm nhạc"
+                                                    data-link="http://job3s_v2.test/am-nhac" class="text-capitalize">
+                                                    Âm nhạc
+                                                </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/the-thao"
+                                            title="Thể thao" data-link="http://job3s_v2.test/the-thao"
+                                            class="menu-link"><span class="nav-link-text">Thể thao</span> <i
+                                                class="menu_icon_down"></i></a>
+                                        <ul role="menu" class="sub-menu">
+                                            <li><a href="http://job3s_v2.test/bong-da-quoc-te" title="Bóng Đá Quốc Tế"
+                                                    data-link="http://job3s_v2.test/bong-da-quoc-te"
+                                                    class="text-capitalize">
+                                                    Bóng Đá Quốc Tế
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/bong-da-viet-nam" title="Bóng Đá Việt nam"
+                                                    data-link="http://job3s_v2.test/bong-da-viet-nam"
+                                                    class="text-capitalize">
+                                                    Bóng Đá Việt nam
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/tin-chuyen-nhuong"
+                                                    title="Tin Chuyển Nhượng"
+                                                    data-link="http://job3s_v2.test/tin-chuyen-nhuong"
+                                                    class="text-capitalize">
+                                                    Tin Chuyển Nhượng
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/video-the-thao" title="Video Thể Thao"
+                                                    data-link="http://job3s_v2.test/video-the-thao"
+                                                    class="text-capitalize">
+                                                    Video Thể Thao
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/hau-truong" title="Hậu Trường"
+                                                    data-link="http://job3s_v2.test/hau-truong" class="text-capitalize">
+                                                    Hậu Trường
+                                                </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/giao-duc"
+                                            title="Giáo dục" data-link="http://job3s_v2.test/giao-duc"
+                                            class="menu-link"><span class="nav-link-text">Giáo dục</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/thoi-trang"
+                                            title="Thời trang" data-link="http://job3s_v2.test/thoi-trang"
+                                            class="menu-link"><span class="nav-link-text">Thời trang</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/cong-nghe"
+                                            title="Công nghệ" data-link="http://job3s_v2.test/cong-nghe"
+                                            class="menu-link"><span class="nav-link-text">Công nghệ</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/suc-khoe"
+                                            title="Sức khoẻ" data-link="http://job3s_v2.test/suc-khoe"
+                                            class="menu-link"><span class="nav-link-text">Sức khoẻ</span> <i
+                                                class="menu_icon_down"></i></a>
+                                        <ul role="menu" class="sub-menu">
+                                            <li><a href="http://job3s_v2.test/dinh-duong" title="Dinh Dưỡng"
+                                                    data-link="http://job3s_v2.test/dinh-duong" class="text-capitalize">
+                                                    Dinh Dưỡng
+                                                </a></li>
+                                            <li><a href="http://job3s_v2.test/nau-an" title="Nấu Ăn"
+                                                    data-link="http://job3s_v2.test/nau-an" class="text-capitalize">
+                                                    Nấu Ăn
+                                                </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/kinh-te"
+                                            title="Kinh Tế" data-link="http://job3s_v2.test/kinh-te"
+                                            class="menu-link"><span class="nav-link-text">Kinh Tế</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/o-toxe-may"
+                                            title="Ô tô/Xe máy" data-link="http://job3s_v2.test/o-toxe-may"
+                                            class="menu-link"><span class="nav-link-text">Ô tô/Xe máy</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/dep"
+                                            title="Đẹp" data-link="http://job3s_v2.test/dep" class="menu-link"><span
+                                                class="nav-link-text">Đẹp</span></a></li>
+                                    <li class="menu-item menu-item-default"><a href="http://job3s_v2.test/du-lich"
+                                            title="Du lịch" data-link="http://job3s_v2.test/du-lich"
+                                            class="menu-link"><span class="nav-link-text">Du lịch</span></a></li>
+                                </ul>
+                            </nav>
+                            <div class="header-column-right whb-column whb-visible-lg">
+                                <div class="header-right-bar">
+                                    <div class="avt_header show_popup_choose"><img src="avatar114743907634423193860.png"
+                                            width="16" height="16" alt="Avatar"></div> <span
+                                        class="font_s16 line_h19 font_w500 cl_a4 name_peole flex_1 text-white">Kiệt
+                                        Trương</span>
+                                    <div class="drop_down d-flex align-items-center"><i class="fa fa-caret-down"></i>
+                                    </div>
+                                </div>
+                                <div id="popup_account" class="popup_account hidden">
+                                    <div class="main_popup">
+                                        <div class="popup_account_top d-flex"><img src="" width="16" height="16"
+                                                alt="Avatar" class="bd_cicre">
+                                            <div class="w_80pt">
+                                                <div class="header-popup-name">Kiệt Trương</div>
+                                                <div class="d-flex align-items-center mb-3"><label
+                                                        class="toggle_checkbox"><input type="checkbox"
+                                                            id="trangthai_timviec"
+                                                            class="slider_check trangthai_timviec">
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    <div class="d-flex align-items-center">
+                                                        <p class="text_job mr_8">Trạng thái tìm việc đang tắt</p> <img
+                                                            src="/images/edit_job.png" width="16" height="16"
+                                                            alt="Chỉnh sửa nhu cầu tìm việc"
+                                                            class="img_edit_job edit_trangthai_timviec"
+                                                            style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-3"><label
+                                                        class="toggle_checkbox"><input type="checkbox"
+                                                            id="toggle_contact" checked="checked" class="slider_check">
+                                                        <div class="slider round"></div>
+                                                    </label>
+                                                    <p class="text_contact">Cho phép NTD liên hệ bạn qua</p>
+                                                </div>
+                                                <div class="choose-type-cv d-flex align-items-center"><label
+                                                        class="d-flex align-items-center container_radio"><input
+                                                            type="radio" name="radio" id="contact_cv" value="1"
+                                                            class="user_contact"> <span class="checkmark"></span>
+                                                        CV online
+                                                    </label> <label
+                                                        class="d-flex align-items-center container_radio ml_16"><input
+                                                            type="radio" name="radio" id="contact_profile" value="2"
+                                                            checked="checked" class="user_contact"> <span
+                                                            class="checkmark"></span>
+                                                        Job3s profile
+                                                    </label></div>
+                                            </div>
+                                        </div>
+                                        <div class="popup_account_bot pd_24"><a href="/ung-vien/tong-quan"
+                                                class="d-flex popup_account_bot_item cursor_p mb_8"><i
+                                                    class="far fa-user"></i>
+                                                <div>Quản lý tài khoản</div>
+                                            </a> <a href="/ung-vien/nha-tuyen-dung-xem-ho-so"
+                                                class="d-flex popup_account_bot_item cursor_p mb_8"><i
+                                                    class="far fa-eye"></i>
+                                                <div>Nhà tuyển dụng xem hồ sơ</div>
+                                            </a> <a href="/ung-vien/goi-y-viec-lam"
+                                                class="d-flex popup_account_bot_item cursor_p mb_8"><i
+                                                    class="far fa-lightbulb-on"></i>
+                                                <div>Gợi ý tìm việc làm</div>
+                                            </a> <a href="/ung-vien/dang-xuat"
+                                                class="d-flex popup_account_bot_item cursor_p"><i
+                                                    class="far fa-arrow-square-right"></i>
+                                                <div>Đăng xuất</div>
+                                            </a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="whb-column mobile-left whb-hidden-lg">
+                            <div class="mobile-logo"><a
+                                    title="Job3s - Tuyển dụng, tìm việc nhanh, việc làm 24h mới nhất" href="/"
+                                    class="header-logo"><img
+                                        src="/uploads/images/setting/dung-bui/2024/06/04/logo-1717495176.svg?ver=1718761994"
+                                        alt="VNtre - Đọc tin tức 24h trong ngày, cập nhật những tin mới nhanh nhất đa dạng cho mọi chủ đề, tin tức online mỗi ngày về giải trí, kinh tế, thể thao, công nghệ, đời sống..."
+                                        height="50"></a></div>
+                        </div>
+                        <div class="whb-column mobile-right whb-hidden-lg">
+                            <div class="woodmart-info-box cursor-pointer text-center">
+                                <div class="box-icon-wrapper box-with-icon box-icon-simple"><a
+                                        href="javascript:void(0);" data-toggle="dropdown" class="woodmart-info-box">
+                                        <div class="box-icon-wrapper box-with-icon box-icon-simple">
+                                            <div class="info-box-icon"><i class="far fa-user"></i></div>
+                                        </div>
+                                    </a>
+                                    <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+                                        <ul class="user__dropdown">
+                                            <li><strong>Xin chào, Kiệt Trương</strong></li>
+                                            <li><a href="/ung-vien/tong-quan">Trang tổng quan</a></li>
+                                            <li><a href="/ung-vien/ho-so">Trang cá nhân</a></li>
+                                            <li><a href="/ung-vien/dang-xuat"><span>Đăng xuất</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-nav-icon mobile-trigger">
+                                <div class="icon_menu"><span class="style_icon"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="section-content">
+        <div class="body-content-dashboard">
+            <div class="menu-dashboard-toggle card">
+                <div class="d-flex align-items-center px-2 py-1 card-body">
+                    <div class="position-relative rounded-start">
+                        <div class="settings-popover"><span class="ripple"><span class="all-0 d-flex flex-center"><span
+                                        class="all-0 d-flex flex-center"><i class="far fa-cog"></i></span></span></span>
+                        </div>
+                    </div> <small
+                        class="text-uppercase text-body-tertiary font-weight-bold py-1 pe-2 ps-1 rounded-end">Menu</small>
+                </div>
+            </div>
+            <div class="dashboard-sidebar">
+                <div class="dashboard-sidebar-action"><button class="dashboard-sidebar-toggle">x</button></div>
+                <div class="dashboard-sidebar-inner">
+                    <ul id="dashboard-list" class="dashboard-list">
+                        <li class="dashboard-list-item"><a href="/ung-vien/tong-quan"
+                                class="dashboard-list-link active"><i class="far fa-id-card"></i> <span
+                                    class="dashboard-list-title">Tổng quan</span></a></li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/ho-so" class="dashboard-list-link"><i
+                                    class="far fa-file"></i> <span class="dashboard-list-title">Quản lý hồ sơ</span></a>
+                        </li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/viec-lam"
+                                class="dashboard-list-link has-item-child"><i class="far fa-file"></i> <span
+                                    class="dashboard-list-title">Quản lý việc làm</span><span
+                                    class="fa fa-caret-right icon-menu"></span></a>
+                            <ul class="dashboard-child-list">
+                                <li class="dashboard-child-item"><a href="/ung-vien/viec-lam-da-ung-tuyen"
+                                        class="dashboard-child-link"><i class="far fa-briefcase"></i>Việc làm đã ứng
+                                        tuyển</a></li>
+                                <li class="dashboard-child-item"><a href="/ung-vien/viec-lam-da-luu"
+                                        class="dashboard-child-link"><i class="far fa-suitcase"></i>việc làm đã lưu</a>
+                                </li>
+                                <li class="dashboard-child-item"><a href="/ung-vien/viec-lam-phu-hop"
+                                        class="dashboard-child-link"><i class="far fa-check-to-slot"></i>Việc làm phù
+                                        hợp</a></li>
+                            </ul>
+                        </li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/quan-ly-cv" class="dashboard-list-link"><i
+                                    class="far fa-layer-group"></i> <span class="dashboard-list-title">Quản lý
+                                    CV</span></a>
+                        </li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/thu-xin-viec" class="dashboard-list-link"><i
+                                    class="far fa-suitcase"></i> <span class="dashboard-list-title">Thư xin
+                                    việc</span></a>
+                        </li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/so-yeu-ly-lich"
+                                class="dashboard-list-link"><i class="far fa-file-user"></i> <span
+                                    class="dashboard-list-title">Sơ yếu lý
+                                    lịch</span></a></li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/cong-ty-dang-theo-doi"
+                                class="dashboard-list-link"><i class="far fa-building"></i> <span
+                                    class="dashboard-list-title">Công ty đang theo dõi</span></a></li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/goi-y-viec-lam"
+                                class="dashboard-list-link"><i class="far fa-lightbulb-on"></i> <span
+                                    class="dashboard-list-title">Gợi ý việc
+                                    làm</span></a></li>
+                        <li class="dashboard-list-item"><a href="/ung-vien/doi-mat-khau" class="dashboard-list-link"><i
+                                    class="far fa-lock"></i> <span class="dashboard-list-title">Đổi mật khẩu</span></a>
+                        </li>
+                        <li class="dashboard-list-item footer-list">
+                            Copyright © 2024 <b>Job3s.vn </b></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!------------------------------------- Start -------------------------------------->
+            <div class="dashboard-content col-xl-10 col-lg-12 p-3 min-vh-100 bg-gray">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="container mt-4">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center cv__m--title">
+                                    <h2 class="f-20 font-weight-bold text-pro mb-0">CV đã tạo trên Job3s</h2>
+                                    <div class="f-flex">
+                                        <a href="#" class="btn text-white">
+                                            <i class="fa fa-plus"></i>
+                                            <span class="font-weight-500 text-white">Tạo CV</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- No data -->
+                                <!-- <div class="cv__m--content">
+                                    <div class="cv__m--content--no-result py-2 ">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="https://cdn.job3s.vn/images/search_none.png" alt="cv">
+                                        </div>
+                                        <span class="fw-400 d-block pb-2 text-center">Bạn chưa tạo CV xin việc
+                                            nào</span>
+                                    </div>
+                                </div> -->
+                                <!--End no data-->
+                                <!--Has data-->
+                                <div class="cv__m--content">
+                                    <div class="cv__m--content--list row justify-content-center">
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 main_cv_color">Đặt làm
+                                                        CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End has data-->
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center cv__m--title">
+                                    <h2 class="f-20 font-weight-bold text-pro mb-0">CV đã tải lên Job3s</h2>
+                                    <div class="f-flex">
+                                        <a href="#" class="btn text-white">
+                                            <i class="fa fa-plus"></i>
+                                            <span class="font-weight-500 text-white">Tải CV lên</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- No data -->
+                                <!-- <div class="cv__m--content">
+                                    <div class="cv__m--content--no-result py-2 ">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="https://cdn.job3s.vn/images/search_none.png" alt="cv">
+                                        </div>
+                                        <span class="fw-400 d-block pb-2 text-center">Bạn chưa upload CV xin việc
+                                            nào</span>
+                                    </div>
+                                </div> -->
+                                <!--End no data-->
+
+                                <!--Has data-->
+                                <div class="cv__m--content">
+                                    <div class="cv__m--content--list row justify-content-center">
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cv__m--content--list--item position-relative overflow-hidden">
+                                            <div class="cv__m--content--list--item--img overflow-hidden">
+                                                <img src="https://cdn.job3s.vn/upload_cvimg_new/cv_upload_new/2024/927fd49ea5e04143b20cf0cd41fe480ca77168a16bc447a19c00f3dca1eb6a2c_202406242041.webp"
+                                                    alt="CV">
+                                            </div>
+                                            <div
+                                                class="cv__m--content--list--item--apply position-absolute d-flex align-items-center justify-content-between">
+                                                <button type="button" class="text-white">
+                                                    <i class="far fa-star"></i>
+                                                    <span class="f-14 font-weight-500 text-white">Đặt làm CVchính</span>
+                                            </div>
+                                            </button>
+                                            <div class="cv__m--content--list--item--content position-absolute">
+                                                <div class="cv__m--content--list--item--content--top position-relative">
+                                                    <h3 class="font-weight-bold text-white overflow-hidden mb-0">
+                                                        <a href="#" target="_blank" class="f-20 text-white">CV - Nguyễn
+                                                            Thị Huyền Trân.pdf</a>
+                                                    </h3>
+                                                    <p class="f-14 text-white overflow-hidden mb-0">
+                                                        Cập nhật lần cuối:
+                                                        <span>24/06/2024 20:41:30 PM</span>
+                                                    </p>
+                                                    <div
+                                                        class="cv__m--content--list--item--content--edit position-absolute cursor-pointer text-white">
+                                                        <i class="far fa-pen-to-square"></i>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="cv__m--content--list--item--content--action d-flex justify-content-between align-items-center">
+                                                    <div
+                                                        class="cv__m--content--list--item--content--action--main d-flex align-items-center">
+                                                        <a target="_blank" href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-download"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Tải
+                                                                xuống</span>
+                                                        </a>
+                                                        <a href="#"
+                                                            class="cv__m--content--list--item--content--action--main--item text-white d-flex align-items-center">
+                                                            <div class="flex align-items-center">
+                                                                <i class="far fa-eye"></i>
+                                                            </div>
+                                                            <span class="f-14 font-weight-500 text-white">Xem CV
+                                                                gốc</span>
+                                                        </a>
+                                                    </div>
+                                                    <a class="cv__m--content--list--item--content--action--delete cursor-pointer f-flex justify-content-center align-items-center text-white"
+                                                        data-title="CV - Nguyễn Thị Huyền Trân.pdf" href="#">
+                                                        <i class="far fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End has data-->
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center cv__m--title">
+                                    <h2 class="f-20 font-weight-bold text-pro mb-0">CV yêu thích trên Job3s</h2>
+                                    <div class="f-flex">
+                                        <a href="#" class="btn text-white">
+                                            <i class="fa fa-plus"></i>
+                                            <span class="font-weight-500 text-white">Tạo CV</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-3">
+                        <div class="cv__m--hide bg-white">
+                            <h3 class="mb-2 f-18">
+                                Ẩn hồ sơ với NTD
+                                <span class="text-white f-13 text-center">Mới</span>
+                            </h3>
+                            <p class="mb-2">
+                                Tôi không muốn CV của tôi hiển thị với danh sách các NTD có tên miền email và thuộc các
+                                công ty dưới đây:
+                            </p>
+                            <div class="cv__m--hide--form">
+                                <p class="cv__m--hide--form--first-paragraph font-weight-500">Các NTD với email có tên
+                                    miền
+                                </p>
+                                <p class="cv__m--hide--form--second-paragraph d-flex f-12">
+                                    <i class="fa fa-info"></i>
+                                    Ví dụ: Để ẩn hồ sơ của bạn với NTD có email admin@tenmiencongty.com , vui lòng nhập
+                                    tenmiencongty.com.
+                                </p>
+                                <div class="cv__m--hide--form--main d-grid position-relative">
+                                    <input type="text" class="form-control" name="block-email" id="block-email"
+                                        placeholder="Nhập tên miền email">
+                                    <span class="position-absolute">@</span>
+                                    <a href="javascript:void(0)" rel="nofollow"
+                                        class="cv__m--hide--form--main--button">Thêm</a>
+                                </div>
+                                <div class="cv__m--hide--search--list">
+                                    <p class="cv__m--hide--search--list--item d-flex justify-content-between p-2">
+                                        <span>TỔ CHỨC GIÁO DỤC FPT22</span>
+                                        <span class="cv__m--hide--search--list--item--delete cursor-pointer">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="cv__m--hide--search">
+                                <p class="cv__m--hide--search--title font-weight-500 ">
+                                    Các NTD thuộc công ty
+                                </p>
+                                <div class="cv__m--hide--search--input position-relative">
+                                    <input class="form-control" type="text" name="block-company" id="block-company"
+                                        placeholder="Nhập tên công ty">
+                                    <span>
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                    <div class="cv__m--hide--search--input--result"></div>
+                                </div>
+                                <div class="cv__m--hide--search--list">
+                                    <p class="cv__m--hide--search--list--item d-flex justify-content-between p-2">
+                                        <span>TỔ CHỨC GIÁO DỤC FPT22</span>
+                                        <span class="cv__m--hide--search--list--item--delete cursor-pointer">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------------- End --------------------------------------->
+        </div>
+    </div>
+    <div class="delete-vitae__popup position-fixed d-flex justify-content-center align-items-center"
+        id="delete-vitae-popup">
+        <div class="delete-vitae__popup--main bg-white">
+            <div
+                class="delete-vitae__popup--main--title d-flex justify-content-center align-items-center btn_primary position-relative">
+                <h3 class="f-20 text-white font-weight-bold mb-0">
+                    Xác nhận
+                </h3>
+                <div class="delete-vitae__popup--main--title--close cursor-pointer position-absolute">
+                    <img src="https://cdn.job3s.vn/images/close_white.png" alt="">
+                </div>
+            </div>
+            <div class="delete-vitae__popup--main--content">
+                <form method="POST">
+                    <p class="text-center fw-400 mb-0">
+                        Bạn có muốn xóa sơ yếu lý lịch có tên
+                        <br>
+                        <span class="font-weight-500">1232131</span>
+                        này không ?
+                    </p>
+                    <div
+                        class="delete-vitae__popup--main--content--action d-flex pt-0 align-items-center justify-content-center">
+                        <button class="cancel cursor-pointer font-weight-bold bg-white">Hủy</button>
+                        <button class="accept cursor-pointer font-weight-bold btn_primary">Đồng ý</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
