@@ -1,7 +1,7 @@
-@import "userCompany.scss";
-@import "variables.scss";
-@import "loginModal.scss";
-@import "cvManagement.scss";
-@import "delete_vitae_popup.scss";
-@import "contact.scss";
-@import "find_candidate.scss";
+/***************************
+ *  Import all scss files  *
+ *  1. create a new scss file in resources/css
+ *  2. import the file here, example: @import "your_file.scss";
+ ***************************/
+
+ @import "index.scss";

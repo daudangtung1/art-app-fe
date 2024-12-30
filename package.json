@@ -4,7 +4,7 @@
         "dart-sass": "^1.25.0"
     },
     "scripts": {
-        "build:css": "dart-sass resources/css/app.scss public/css/app-render.css",
-        "watch:css": "dart-sass --watch resources/css/app.scss:public/css/app-render.css"
+        "dev": "dart-sass resources/css/app.scss public/css/app.css",
+        "watch": "dart-sass --watch resources/css/app.scss:public/css/app.css"
     }
 }
