@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-full">
+                    <h1 class="text-xl font-bold">Art Gallery</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Gallery</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Favorites</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Profile Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                <img src="https://via.placeholder.com/150" alt="Profile" class="rounded-full w-32 h-32">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-bold">Artist Name</h2>
+                    <p class="text-gray-600">Environment Artist</p>
+                    <div class="flex space-x-4 mt-2">
+                        <span class="text-gray-600">67.1K Watchers</span>
+                        <span class="text-gray-600">465 Deviations</span>
+                        <span class="text-gray-600">1.7M Pageviews</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Gallery Items -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <a href="https://via.placeholder.com/400x300" data-lightbox="gallery">
+                    <img src="https://via.placeholder.com/400x300" alt="Artwork" class="w-full h-48 object-cover">
+                </a>
+                <div class="p-4">
+                    <h3 class="font-semibold">Artwork Title</h3>
+                    <p class="text-gray-600 text-sm">Artist Name</p>
+                </div>
+            </div>
+            <!-- Repeat gallery items as needed -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">About</h3>
+                    <p class="text-gray-400">Art Gallery platform for artists to showcase their work.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Gallery</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Newsletter</h3>
+                    <form class="space-y-2">
+                        <input type="email" placeholder="Enter your email" class="w-full px-4 py-2 rounded bg-gray-700 text-white">
+                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Art Gallery. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize lightbox
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': 'Image %1 of %2'
+        });
+    </script>
+</body>
+</html>
