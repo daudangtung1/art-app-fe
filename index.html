@@ -1,17 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="public/css/app.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArtGallery — Discover Digital Art</title>
+  <meta name="description" content="ArtGallery – Discover, share and celebrate the world's digital artwork. Browse thousands of artworks from talented artists worldwide." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #06070d; color: #e8e8f0; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #111218; }
+    ::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e59b; }
+
+    /* Navbar */
+    .da-nav { background: rgba(6,7,13,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1b26; position: sticky; top: 0; z-index: 100; }
+    .da-search { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.2s; }
+    .da-search:focus-within { border-color: #00e59b; }
+    .da-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 0.875rem; width: 220px; }
+    .da-search input::placeholder { color: #8b8ca8; }
+    .da-btn-primary { background: #00e59b; color: #06070d; font-weight: 600; border: none; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+    .da-btn-primary:hover { background: #00c984; transform: translateY(-1px); }
+    .da-btn-outline { background: transparent; color: #e8e8f0; font-weight: 500; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: border-color 0.2s, background 0.2s; }
+    .da-btn-outline:hover { border-color: #00e59b; background: rgba(0,229,155,0.08); }
+    .da-nav-link { font-size: 0.9rem; color: #8b8ca8; transition: color 0.2s; padding: 0.25rem 0.5rem; border-radius: 6px; text-decoration: none; }
+    .da-nav-link:hover { color: #e8e8f0; }
+    .da-nav-link.active { color: #00e59b; }
+
+    /* Hero */
+    .hero { position: relative; min-height: 560px; display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, rgba(6,7,13,0.92) 40%, rgba(6,7,13,0.5) 100%); }
+    .hero-content { position: relative; z-index: 1; max-width: 620px; }
+    .hero-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; }
+    .hero-title span { background: linear-gradient(135deg, #00e59b, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-subtitle { font-size: 1.125rem; line-height: 1.6; color: #8b8ca8; margin-top: 1rem; }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+    .hero-search { background: rgba(26,27,38,0.8); border: 1px solid #2a2b3d; border-radius: 30px; padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; width: 100%; max-width: 500px; backdrop-filter: blur(8px); transition: border-color 0.2s; }
+    .hero-search:focus-within { border-color: #00e59b; box-shadow: 0 0 0 3px rgba(0,229,155,0.1); }
+    .hero-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 1rem; flex: 1; }
+    .hero-search input::placeholder { color: #8b8ca8; }
+    .hero-search button { background: #00e59b; border: none; color: #06070d; font-size: 0.875rem; font-weight: 700; padding: 0.5rem 1.25rem; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+
+    /* Category chips */
+    .cat-chip { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1rem; font-size: 0.875rem; color: #8b8ca8; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .cat-chip:hover { border-color: #00e59b; color: #00e59b; background: rgba(0,229,155,0.06); }
+    .cat-chip.active { border-color: #00e59b; color: #00e59b; background: rgba(0,229,155,0.1); }
+
+    /* Art Card */
+    .art-card { background: #111218; border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; position: relative; border: 1px solid transparent; }
+    .art-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); border-color: rgba(0,229,155,0.15); }
+    .art-card:hover .art-overlay { opacity: 1; }
+    .art-card img { width: 100%; display: block; }
+    .art-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,7,13,0.9) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; }
+    .art-card-meta { padding: 0.75rem 1rem; }
+    .stat-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; color: #8b8ca8; }
+
+    /* Artist mini card */
+    .artist-card { background: #111218; border: 1px solid #1a1b26; border-radius: 12px; padding: 1.25rem; text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+    .artist-card:hover { border-color: rgba(0,229,155,0.3); transform: translateY(-3px); }
+    .artist-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 0.75rem; object-fit: cover; border: 2px solid #00e59b; }
+    .artist-name { font-size: 0.9375rem; font-weight: 700; color: #e8e8f0; }
+    .artist-stats { font-size: 0.75rem; color: #8b8ca8; margin-top: 0.25rem; }
+    .artist-btn { margin-top: 0.75rem; background: transparent; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.3rem 0.875rem; font-size: 0.75rem; color: #8b8ca8; cursor: pointer; transition: all 0.2s; }
+    .artist-btn:hover { border-color: #00e59b; color: #00e59b; }
+
+    /* Section */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .section-title { font-size: 1.25rem; font-weight: 700; }
+    .section-link { font-size: 0.8125rem; color: #00e59b; text-decoration: none; }
+    .section-link:hover { text-decoration: underline; }
+
+    /* Masonry */
+    .masonry { columns: 4; column-gap: 12px; }
+    .masonry-item { break-inside: avoid; margin-bottom: 12px; }
+    @media (max-width: 1280px) { .masonry { columns: 3; } }
+    @media (max-width: 900px)  { .masonry { columns: 2; } }
+    @media (max-width: 600px)  { .masonry { columns: 1; } }
+
+    /* Daily Deviation */
+    .dd-card { background: #111218; border: 1px solid #1a1b26; border-radius: 12px; overflow: hidden; position: relative; }
+    .dd-badge { position: absolute; top: 12px; left: 12px; background: linear-gradient(135deg, #00e59b, #0ea5e9); color: #06070d; font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.25rem 0.625rem; border-radius: 4px; z-index: 2; }
+    .dd-card img { width: 100%; height: 280px; object-fit: cover; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.45s ease forwards; }
+
+    /* Announcement bar */
+    .announcement { background: linear-gradient(90deg, rgba(0,229,155,0.15), rgba(14,165,233,0.15)); border-bottom: 1px solid rgba(0,229,155,0.2); padding: 0.5rem 1rem; text-align: center; font-size: 0.8125rem; color: #00e59b; }
+    .announcement a { color: white; text-decoration: underline; }
+  </style>
 </head>
-
 <body>
-    <div class="a1">
-        a1
-    </div>
-</body>
 
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  🎨 New: AI-powered art discovery is here! <a href="#">Try it now →</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="da-nav">
+  <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-4 h-14">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: #00e59b;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="font-bold text-white text-lg hidden sm:block">ArtGallery</span>
+    </a>
+    <div class="da-search flex-1 max-w-sm hidden md:flex">
+      <i class="fas fa-search" style="color:#8b8ca8; font-size:0.8rem;"></i>
+      <input type="text" placeholder="Search art, artists, tags..." />
+    </div>
+    <div class="flex-1"></div>
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="index.html" class="da-nav-link active">Explore</a>
+      <a href="demo-author.html" class="da-nav-link">Artists</a>
+      <a href="gallery.html" class="da-nav-link">Gallery</a>
+      <a href="#" class="da-nav-link">Shop</a>
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="demo-author.html" class="da-btn-outline hidden sm:block">Log In</a>
+      <button class="da-btn-primary">Join Free</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="public/images/banner_hero.jpg" alt="Hero Background" />
+  </div>
+  <div class="hero-content max-w-screen-xl mx-auto px-4 w-full py-16">
+    <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#00e59b; letter-spacing:0.15em;">✦ The Art Community</p>
+    <h1 class="hero-title text-white">
+      Where <span>Digital Art</span><br />Comes Alive
+    </h1>
+    <p class="hero-subtitle">
+      Discover, share and celebrate artworks from talented creators worldwide.<br />
+      Join 90 million artists and art lovers.
+    </p>
+    <div class="hero-actions">
+      <div class="hero-search">
+        <i class="fas fa-search" style="color:#8b8ca8;"></i>
+        <input type="text" placeholder="Search for art, artists, tags..." />
+        <button>Search</button>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <span class="text-sm" style="color:#8b8ca8;">Trending:</span>
+      <a href="#" class="text-sm" style="color:#00e59b; text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">anime</a>
+      <a href="#" class="text-sm" style="color:#00e59b; text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">environment art</a>
+      <a href="#" class="text-sm" style="color:#00e59b; text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">cyberpunk</a>
+      <a href="#" class="text-sm" style="color:#00e59b; text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">fantasy</a>
+      <a href="#" class="text-sm" style="color:#00e59b; text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">illustration</a>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="max-w-screen-xl mx-auto px-4 py-10">
+
+  <!-- Category Filter -->
+  <div class="flex flex-wrap gap-2 mb-8 overflow-x-auto pb-1">
+    <a href="#" class="cat-chip active">🔥 Trending</a>
+    <a href="#" class="cat-chip">⭐ Daily Deviations</a>
+    <a href="#" class="cat-chip">🏙 Digital Art</a>
+    <a href="#" class="cat-chip">🧝 Characters</a>
+    <a href="#" class="cat-chip">🌸 Anime & Manga</a>
+    <a href="#" class="cat-chip">🖼 Traditional</a>
+    <a href="#" class="cat-chip">📸 Photography</a>
+    <a href="#" class="cat-chip">🤖 Sci-Fi</a>
+    <a href="#" class="cat-chip">🌿 Nature</a>
+    <a href="#" class="cat-chip">🎭 Fan Art</a>
+  </div>
+
+  <!-- Daily Deviation Spotlight -->
+  <section class="mb-12">
+    <div class="section-header">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color:#00e59b; letter-spacing:0.12em;">⭐ Daily Deviations</p>
+        <h2 class="section-title">Editor's Picks</h2>
+      </div>
+      <a href="#" class="section-link">Browse All →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <a href="demo-author.html" class="dd-card md:col-span-1 art-card block" style="text-decoration:none;">
+        <div class="dd-badge">Daily Deviation</div>
+        <img src="public/images/banner_hero.jpg" alt="Konbini Interior" />
+        <div class="art-card-meta">
+          <p class="font-semibold text-white">Konbini Interior</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-2">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 562K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 18.4K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 234</span>
+          </div>
+        </div>
+      </a>
+      <a href="gallery.html" class="dd-card art-card block" style="text-decoration:none;">
+        <div class="dd-badge">Daily Deviation</div>
+        <img src="public/images/artwork_char1.jpg" alt="Wink Witch" />
+        <div class="art-card-meta">
+          <p class="font-semibold text-white">Wink Witch WRB</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-2">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 23.7K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 1.2K</span>
+          </div>
+        </div>
+      </a>
+      <a href="gallery.html" class="dd-card art-card block" style="text-decoration:none;">
+        <div class="dd-badge">Daily Deviation</div>
+        <img src="public/images/artwork_city1.jpg" alt="Future City" />
+        <div class="art-card-meta">
+          <p class="font-semibold text-white">Future City</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-2">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 26.7K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 945</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Trending Artworks (Masonry) -->
+  <section class="mb-12">
+    <div class="section-header">
+      <h2 class="section-title">🔥 Trending Now</h2>
+      <a href="gallery.html" class="section-link">View All →</a>
+    </div>
+    <div class="masonry">
+      <div class="masonry-item fade-in" style="animation-delay:0.05s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_city2.jpg" alt="Rainy Alley" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Rainy Alley Night</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Rainy Alley Night</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 31.2K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 1.5K</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.1s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_char2.jpg" alt="2B Android" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">2B & Small Stubbys</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">2B & Small Stubbys</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 14.9K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 892</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.15s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_nature1.jpg" alt="Sakura Dawn" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Sakura Dawn</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Sakura Dawn</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 18.1K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 762</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.2s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_interior1.jpg" alt="Cozy Cafe" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Mokuren Café</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Mokuren Café</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 19.5K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 834</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.25s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/banner_hero.jpg" alt="Konbini Street" style="filter:hue-rotate(20deg) saturate(1.2);" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Neo Tokyo</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Neo Tokyo</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 38.4K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 2.1K</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.3s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_char1.jpg" alt="Witch" style="filter:hue-rotate(60deg);" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Moon Sorceress</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Moon Sorceress</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 11.3K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 487</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.35s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_city1.jpg" alt="Float City" style="filter:brightness(0.9) saturate(1.3);" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Floating Spires</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Floating Spires</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 22.8K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 1.1K</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="masonry-item fade-in" style="animation-delay:0.4s;">
+        <a href="gallery.html" class="art-card block" style="text-decoration:none;">
+          <img src="public/images/artwork_char2.jpg" alt="Cyber" style="filter:hue-rotate(180deg);" />
+          <div class="art-overlay">
+            <p class="font-semibold text-sm" style="color:#fff;">Cyber Sentinel</p>
+            <p class="text-xs" style="color:#ccc;">by arsenixc</p>
+          </div>
+          <div class="art-card-meta">
+            <p class="text-sm font-medium text-white truncate">Cyber Sentinel</p>
+            <div class="flex gap-3 mt-1">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 9.7K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 334</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Artists -->
+  <section class="mb-12">
+    <div class="section-header">
+      <h2 class="section-title">👑 Featured Artists</h2>
+      <a href="#" class="section-link">See All →</a>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <a href="demo-author.html" class="artist-card" style="text-decoration:none;">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="artist-avatar" />
+        <div class="artist-name">arsenixc</div>
+        <div class="artist-stats">67.3K Watchers · 467 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </a>
+      <div class="artist-card">
+        <div class="artist-avatar" style="background: linear-gradient(135deg,#7c3aed,#db2777); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; color:#fff;">Y</div>
+        <div class="artist-name">Yoshida_Art</div>
+        <div class="artist-stats">24.1K Watchers · 128 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar" style="background: linear-gradient(135deg,#f59e0b,#ef4444); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; color:#06070d;">G</div>
+        <div class="artist-name">GhibliDreams</div>
+        <div class="artist-stats">18.5K Watchers · 89 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar" style="background: linear-gradient(135deg,#0ea5e9,#14b8a6); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; color:#fff;">N</div>
+        <div class="artist-name">NeonBlush</div>
+        <div class="artist-stats">31.2K Watchers · 215 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar" style="background: linear-gradient(135deg,#10b981,#3b82f6); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; color:#fff;">L</div>
+        <div class="artist-name">LunaPixel</div>
+        <div class="artist-stats">12.8K Watchers · 67 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar" style="background: linear-gradient(135deg,#f472b6,#a78bfa); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; color:#fff;">K</div>
+        <div class="artist-name">KoroMochi</div>
+        <div class="artist-stats">9.4K Watchers · 43 artworks</div>
+        <button class="artist-btn">Watch</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="mb-12 rounded-2xl overflow-hidden relative" style="background: linear-gradient(135deg, #0d1117, #1a1b26);">
+    <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(0,229,155,0.08), rgba(14,165,233,0.08));"></div>
+    <div class="absolute top-0 right-0 w-64 h-64 rounded-full" style="background: radial-gradient(circle, rgba(0,229,155,0.12) 0%, transparent 70%); transform: translate(30%, -30%);"></div>
+    <div class="relative px-8 py-12 text-center max-w-2xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#00e59b; letter-spacing:0.15em;">✦ Join the Community</p>
+      <h2 class="text-3xl font-bold text-white mb-3">Start Your Art Journey Today</h2>
+      <p class="text-sm leading-relaxed mb-6" style="color:#8b8ca8;">Share your work, connect with creators, and get discovered by thousands of art lovers. Free forever.</p>
+      <div class="flex gap-3 justify-center flex-wrap">
+        <button class="da-btn-primary px-8 py-3 text-base">Create Free Account</button>
+        <button class="da-btn-outline px-8 py-3 text-base">Explore Art</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#080910; border-top: 1px solid #1a1b26;">
+  <div class="max-w-screen-xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#00e59b;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="font-bold text-white text-lg">ArtGallery</span>
+        </div>
+        <p class="text-xs leading-relaxed mb-4" style="color:#8b8ca8;">A platform for artists to showcase their work and connect with art lovers worldwide.</p>
+        <div class="flex gap-3" style="color:#8b8ca8;">
+          <a href="#" class="hover:text-green-400 transition-colors"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="hover:text-green-400 transition-colors"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="hover:text-green-400 transition-colors"><i class="fab fa-discord"></i></a>
+          <a href="#" class="hover:text-green-400 transition-colors"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="hover:text-green-400 transition-colors"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4" style="color:#fff;">Explore</h4>
+        <ul class="space-y-2 text-sm" style="color:#8b8ca8;">
+          <li><a href="#" class="hover:text-white transition-colors">Browse Art</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Daily Deviations</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Shop Prints</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Challenges</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">AI Tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4" style="color:#fff;">Community</h4>
+        <ul class="space-y-2 text-sm" style="color:#8b8ca8;">
+          <li><a href="#" class="hover:text-white transition-colors">Groups</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Forums</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Events</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Newsletter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider mb-4" style="color:#fff;">Support</h4>
+        <ul class="space-y-2 text-sm" style="color:#8b8ca8;">
+          <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style="border-color:#1a1b26; color:#8b8ca8;">
+      <p>© 2025 ArtGallery. All rights reserved.</p>
+      <div class="flex items-center gap-2">
+        <span>Made with</span>
+        <i class="fas fa-heart" style="color:#f43f5e;"></i>
+        <span>for the art community</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Category filter animation
+  document.querySelectorAll('.cat-chip').forEach(chip => {
+    chip.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Animate-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.style.animationPlayState = 'running';
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+
+  // Watch button toggle
+  document.querySelectorAll('.artist-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const watching = this.dataset.watching === 'true';
+      if (watching) {
+        this.dataset.watching = 'false';
+        this.textContent = 'Watch';
+        this.style.color = '';
+        this.style.borderColor = '';
+      } else {
+        this.dataset.watching = 'true';
+        this.textContent = 'Watching ✓';
+        this.style.color = '#00e59b';
+        this.style.borderColor = '#00e59b';
+      }
+    });
+  });
+</script>
+</body>
 </html>

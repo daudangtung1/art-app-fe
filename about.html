@@ -1,271 +1,576 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Art Gallery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arsenixc — About — ArtGallery</title>
+  <meta name="description" content="Learn about arsenixc — digital environment artist with 467 artworks, 67K followers, and 1.7M pageviews on ArtGallery." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #06070d; color: #e8e8f0; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #111218; }
+    ::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e59b; }
+    .da-nav { background: rgba(6,7,13,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1b26; position: sticky; top: 0; z-index: 100; }
+    .da-search { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.45rem 1rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.2s; }
+    .da-search:focus-within { border-color: #00e59b; }
+    .da-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 0.875rem; width: 200px; }
+    .da-search input::placeholder { color: #8b8ca8; }
+    .da-btn-primary { background: #00e59b; color: #06070d; font-weight: 600; border: none; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+    .da-btn-primary:hover { background: #00c984; transform: translateY(-1px); }
+    .da-btn-outline { background: transparent; color: #e8e8f0; font-weight: 500; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: border-color 0.2s, background 0.2s; }
+    .da-btn-outline:hover { border-color: #00e59b; background: rgba(0,229,155,0.08); }
+    .profile-banner { position: relative; height: 280px; overflow: hidden; }
+    .profile-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #06070d 0%, rgba(6,7,13,0.5) 60%, transparent 100%); }
+    .profile-info-bar { background: #111218; border-bottom: 1px solid #1a1b26; }
+    .avatar-ring { border: 3px solid #00e59b; border-radius: 50%; padding: 2px; }
+    .profile-tab { font-size: 0.875rem; font-weight: 500; color: #8b8ca8; padding: 1rem 1.25rem; border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .profile-tab:hover { color: #e8e8f0; }
+    .profile-tab.active { color: #00e59b; border-bottom-color: #00e59b; }
+    .core-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: #06070d; font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+    /* About sections */
+    .section-card { background: #111218; border: 1px solid #1a1b26; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
+    .section-card-title { font-size: 1rem; font-weight: 700; color: #e8e8f0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .section-card-title .icon { font-size: 0.875rem; color: #00e59b; }
+    /* Stat card */
+    .stat-chip { background: #1a1b26; border-radius: 8px; padding: 1rem; text-align: center; }
+    .stat-chip .val { font-size: 1.5rem; font-weight: 700; color: #e8e8f0; }
+    .stat-chip .lbl { font-size: 0.7rem; color: #8b8ca8; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Info row */
+    .info-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 0; border-bottom: 1px solid #1a1b26; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .icon { width: 28px; text-align: center; color: #8b8ca8; font-size: 0.875rem; flex-shrink: 0; }
+    .info-row .label { font-size: 0.8125rem; color: #8b8ca8; }
+    .info-row .value { font-size: 0.8125rem; color: #e8e8f0; }
+    /* Badge */
+    .badge-group { margin-bottom: 1rem; }
+    .badge-group-name { font-size: 0.75rem; font-weight: 600; color: #8b8ca8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .badge-item { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a1b26; border-radius: 8px; padding: 0.5rem 0.75rem; margin: 0 0.375rem 0.375rem 0; }
+    .badge-icon { font-size: 1.25rem; }
+    .badge-info .badge-name { font-size: 0.8125rem; font-weight: 600; color: #e8e8f0; }
+    .badge-info .badge-count { font-size: 0.7rem; color: #8b8ca8; }
+    /* Watcher grid */
+    .watcher-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.75rem; }
+    .watcher-card { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.75rem 0.5rem; background: #1a1b26; border-radius: 8px; cursor: pointer; transition: border-color 0.2s, transform 0.2s; border: 1px solid transparent; }
+    .watcher-card:hover { border-color: #00e59b33; transform: translateY(-2px); }
+    .watcher-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.125rem; }
+    .watcher-name { font-size: 0.72rem; color: #e8e8f0; text-align: center; }
+    /* Group tag */
+    .group-tag { display: inline-flex; align-items: center; gap: 0.375rem; border: 1px solid #2a2b3d; border-radius: 6px; padding: 0.375rem 0.75rem; margin: 0 0.375rem 0.375rem 0; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .group-tag:hover { border-color: #00e59b; background: rgba(0,229,155,0.06); }
+    .group-tag .icon { width: 28px; height: 28px; border-radius: 4px; background: #2a2b3d; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; }
+    .group-tag .name { font-size: 0.8125rem; color: #e8e8f0; }
+    /* Comment */
+    .comment-item { display: flex; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid #1a1b26; }
+    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; }
+    .comment-body { flex: 1; }
+    .comment-user { font-size: 0.875rem; font-weight: 600; color: #e8e8f0; }
+    .comment-time { font-size: 0.75rem; color: #8b8ca8; }
+    .comment-text { font-size: 0.875rem; color: #c8c8d8; margin-top: 0.25rem; line-height: 1.5; }
+    .comment-actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .comment-action-btn { background: none; border: none; font-size: 0.75rem; color: #8b8ca8; cursor: pointer; transition: color 0.2s; padding: 0; }
+    .comment-action-btn:hover { color: #00e59b; }
+    /* About nav pills */
+    .about-tab { font-size: 0.875rem; font-weight: 500; color: #8b8ca8; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .about-tab:hover { color: #e8e8f0; background: #1a1b26; }
+    .about-tab.active { color: #00e59b; background: rgba(0,229,155,0.1); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.4s ease forwards; }
+    .bio-alert { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 1rem; }
+    .bio-alert p { font-size: 0.875rem; }
+    .bio-alert .alert-title { font-weight: 700; color: #f87171; margin-bottom: 0.25rem; }
+    .bio-alert .alert-body { color: #fca5a5; }
+  </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Header -->
-    <header class="bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-full">
-                    <h1 class="text-xl font-bold text-gray-900">Art Gallery</h1>
-                </div>
-                <div class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Gallery</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Favorites</a>
-                    <a href="#" class="text-gray-900 font-bold">About</a>
-                </div>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Profile Header -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-                <img src="https://via.placeholder.com/150" alt="Profile" class="rounded-full w-32 h-32">
-                <div class="text-center md:text-left">
-                    <h2 class="text-2xl font-bold text-gray-900">arsenixc</h2>
-                    <p class="text-gray-600">Artist // Professional // Digital Art</p>
-                    <div class="flex flex-wrap gap-4 mt-2">
-                        <span class="text-gray-600">67.1K Watchers</span>
-                        <span class="text-gray-600">465 Deviations</span>
-                        <span class="text-gray-600">1.7M Pageviews</span>
-                    </div>
-                </div>
-            </div>
+<!-- NAVBAR -->
+<nav class="da-nav">
+  <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-4 h-14">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: #00e59b;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="font-bold text-white text-lg hidden sm:block">ArtGallery</span>
+    </a>
+    <div class="da-search flex-1 max-w-xs hidden md:flex">
+      <i class="fas fa-search" style="color:#8b8ca8; font-size:0.8rem;"></i>
+      <input type="text" placeholder="Search art, artists..." />
+    </div>
+    <div class="flex-1"></div>
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="demo-author.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Explore</a>
+      <a href="gallery.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Gallery</a>
+      <a href="about.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#00e59b;">About</a>
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button class="da-btn-outline hidden sm:block"><i class="fas fa-eye mr-1"></i> Watch</button>
+      <button class="da-btn-primary">+ Submit</button>
+      <div class="w-8 h-8 rounded-full overflow-hidden cursor-pointer border border-gray-700 hover:border-green-400 transition-colors">
+        <img src="public/images/artist_avatar.jpg" alt="User" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="profile-banner">
+  <img src="public/images/artwork_city1.jpg" alt="Profile Banner" style="filter: brightness(0.85);" />
+</div>
+
+<!-- PROFILE INFO BAR -->
+<div class="profile-info-bar">
+  <div class="max-w-screen-xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 py-4 -mt-14 relative z-10">
+      <div class="avatar-ring flex-shrink-0">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-20 h-20 rounded-full object-cover block" />
+      </div>
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-1">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-xl font-bold text-white">arsenixc</h1>
+            <span class="core-badge">CORE</span>
+            <span class="text-sm" style="color:#8b8ca8;">· Artist // Professional // Digital Art</span>
+          </div>
+          <div class="flex flex-wrap gap-4 mt-1 text-sm">
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">67.3K</span> Watchers</span>
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">467</span> Artworks</span>
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">1.7M</span> Pageviews</span>
+          </div>
         </div>
-
-        <!-- About Navigation -->
-        <div class="bg-white rounded-lg shadow-md p-4 mb-8">
-            <div class="flex flex-wrap gap-4">
-                <a href="#about" class="px-4 py-2 bg-blue-600 text-white rounded-lg">About Me</a>
-                <a href="#stats" class="px-4 py-2 text-gray-600 hover:text-gray-900">Statistics</a>
-                <a href="#watchers" class="px-4 py-2 text-gray-600 hover:text-gray-900">Watchers</a>
-                <a href="#watching" class="px-4 py-2 text-gray-600 hover:text-gray-900">Watching</a>
-                <a href="#groups" class="px-4 py-2 text-gray-600 hover:text-gray-900">Groups</a>
-                <a href="#badges" class="px-4 py-2 text-gray-600 hover:text-gray-900">Badges</a>
-                <a href="#comments" class="px-4 py-2 text-gray-600 hover:text-gray-900">Comments</a>
-            </div>
+        <div class="flex items-center gap-2">
+          <button class="da-btn-outline"><i class="fas fa-eye mr-1"></i> Watch</button>
+          <button class="da-btn-primary"><i class="fas fa-share-alt mr-1"></i> Share</button>
         </div>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="flex overflow-x-auto gap-0 border-b" style="border-color:#1a1b26;">
+      <a href="demo-author.html" class="profile-tab">Home</a>
+      <a href="gallery.html"    class="profile-tab">Gallery</a>
+      <a href="favourites.html" class="profile-tab">Favourites</a>
+      <a href="posts.html"      class="profile-tab">Posts</a>
+      <a href="about.html"     class="profile-tab active">About</a>
+    </div>
+  </div>
+</div>
 
-        <!-- About Me Section -->
-        <section id="about" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">About Me</h3>
-            <div class="space-y-4">
-                <div class="flex items-center space-x-2 text-gray-600">
-                    <i class="fas fa-calendar"></i>
-                    <span>Apr 27</span>
-                </div>
-                <div class="flex items-center space-x-2 text-gray-600">
-                    <i class="fas fa-user-clock"></i>
-                    <span>Deviant for 16 years</span>
-                </div>
-                <div class="flex items-center space-x-2 text-gray-600">
-                    <i class="fab fa-twitter"></i>
-                    <a href="#" class="text-blue-500 hover:underline">twitter.com/ArsXC</a>
-                </div>
-            </div>
-            <div class="mt-6">
-                <h4 class="font-bold text-gray-900 mb-2">My Bio</h4>
-                <p class="text-gray-600 mb-4">https://hipolink.me/arsenixc</p>
-                <div class="bg-red-50 p-4 rounded-lg">
-                    <p class="text-red-700 font-bold">DO NOT USE MY WORKS ON YOUTUBE COVERS OR OTHER GAMES etc. NO PERMISSION FOR ALL WORKS!</p>
-                    <p class="text-red-600 mt-2">Most of my pictures in galleries, especially backgrounds is part of commercial projects, other companies have commercial rights to use this images, so its cannot use any else.</p>
-                </div>
-            </div>
-            <div class="mt-6">
-                <h4 class="font-bold text-gray-900 mb-2">Favourite Visual Artist</h4>
-                <p class="text-gray-600">新海誠, 三輪, 男鹿和雄</p>
-            </div>
-            <div class="mt-4">
-                <h4 class="font-bold text-gray-900 mb-2">Favourite Bands / Musical Artists</h4>
-                <p class="text-gray-600">random playlist</p>
-            </div>
-        </section>
+<!-- MAIN CONTENT -->
+<main class="max-w-screen-xl mx-auto px-4 py-6 flex gap-6">
 
-        <!-- Statistics Section -->
-        <section id="stats" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Statistics</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">1.7M</div>
-                    <div class="text-gray-600">Pageviews</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">465</div>
-                    <div class="text-gray-600">Deviations</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">67.1K</div>
-                    <div class="text-gray-600">Watchers</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">193</div>
-                    <div class="text-gray-600">Watching</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">1.3K</div>
-                    <div class="text-gray-600">Favourites</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">6.2K</div>
-                    <div class="text-gray-600">Comments Made</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">2.3K</div>
-                    <div class="text-gray-600">Comments Received</div>
-                </div>
-            </div>
-        </section>
+  <!-- LEFT: About tabs nav -->
+  <aside class="w-52 flex-shrink-0 hidden lg:block">
+    <div class="sticky top-20 space-y-1">
+      <a href="#about-me"   class="about-tab active block" onclick="setActiveTab(this)">About Me</a>
+      <a href="#stats"      class="about-tab block" onclick="setActiveTab(this)">Statistics</a>
+      <a href="#watchers"   class="about-tab block" onclick="setActiveTab(this)">Watchers</a>
+      <a href="#watching"   class="about-tab block" onclick="setActiveTab(this)">Watching</a>
+      <a href="#groups"     class="about-tab block" onclick="setActiveTab(this)">Groups</a>
+      <a href="#badges"     class="about-tab block" onclick="setActiveTab(this)">Badges</a>
+      <a href="#comments"   class="about-tab block" onclick="setActiveTab(this)">Comments</a>
+    </div>
+  </aside>
 
-        <!-- Watchers Section -->
-        <section id="watchers" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Watchers</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded-lg">
-                    <img src="https://via.placeholder.com/40" alt="Watcher" class="rounded-full">
-                    <span class="text-gray-900">dmkdtymkdtym</span>
-                </div>
-                <!-- Add more watchers as needed -->
-            </div>
-            <button class="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200">
-                Load more
-            </button>
-        </section>
+  <!-- RIGHT: All sections -->
+  <div class="flex-1 min-w-0">
 
-        <!-- Groups Section -->
-        <section id="groups" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Group Member</h3>
-            <div class="flex flex-wrap gap-2">
-                <a href="#" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">3D-Anime</a>
-                <a href="#" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">Digital-Art-Fantasy</a>
-                <a href="#" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">Digital-Beauty</a>
-                <a href="#" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">RedBlackWhite</a>
-                <!-- Add more groups as needed -->
-            </div>
-            <button class="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200">
-                Load more
-            </button>
-        </section>
-
-        <!-- Badges Section -->
-        <section id="badges" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Badges</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">🎨</div>
-                    <div class="text-gray-900">Painter's Palette</div>
-                    <div class="text-sm text-gray-600">4 badges</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">💎</div>
-                    <div class="text-gray-900">Diamond</div>
-                    <div class="text-sm text-gray-600">19 badges</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">🌟</div>
-                    <div class="text-gray-900">Emerald</div>
-                    <div class="text-sm text-gray-600">12 badges</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">💖</div>
-                    <div class="text-gray-900">Heart</div>
-                    <div class="text-sm text-gray-600">35 badges</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">💰</div>
-                    <div class="text-gray-900">Gold Coin</div>
-                    <div class="text-sm text-gray-600">27 badges</div>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl mb-2">🎉</div>
-                    <div class="text-gray-900">Confetti</div>
-                    <div class="text-sm text-gray-600">12 badges</div>
-                </div>
-            </div>
-            <div class="mt-6">
-                <h4 class="font-bold text-gray-900 mb-2">Recent Badge Activity</h4>
-                <div class="space-y-2">
-                    <div class="flex items-center space-x-2 text-gray-600">
-                        <img src="https://via.placeholder.com/24" alt="User" class="rounded-full">
-                        <span>Gnomester47</span>
-                        <span>gave</span>
-                        <span class="font-bold">arsenixc</span>
-                        <span>a Gold Coin badge</span>
-                        <span class="text-sm">Yesterday</span>
-                    </div>
-                    <!-- Add more badge activities as needed -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Comments Section -->
-        <section id="comments" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Comments</h3>
-            <div class="space-y-4">
-                <div class="border-b pb-4">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <img src="https://via.placeholder.com/32" alt="User" class="rounded-full">
-                        <span class="font-bold text-gray-900">arsenixc</span>
-                        <span class="text-gray-500">commented on</span>
-                        <span class="font-bold text-gray-900">Shining Nikki Headquarter of Savior Organization</span>
-                    </div>
-                    <p class="text-gray-600">Thanks!</p>
-                    <span class="text-sm text-gray-500">Mar 4, 2025</span>
-                </div>
-                <!-- Add more comments as needed -->
-            </div>
-            <button class="mt-4 w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200">
-                Load more
-            </button>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-12">
-        <div class="container mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-bold mb-4">About</h3>
-                    <p class="text-gray-400">Art Gallery platform for artists to showcase their work.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Gallery</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Connect</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Newsletter</h3>
-                    <form class="space-y-2">
-                        <input type="email" placeholder="Enter your email" class="w-full px-4 py-2 rounded bg-gray-700 text-white">
-                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Art Gallery. All rights reserved.</p>
-            </div>
+    <!-- About Me -->
+    <section id="about-me" class="fade-in" style="animation-delay:0.05s;">
+      <div class="section-card">
+        <h2 class="section-card-title"><i class="fas fa-user icon"></i> About Me</h2>
+        <div class="space-y-0">
+          <div class="info-row">
+            <div class="icon"><i class="fas fa-palette"></i></div>
+            <span class="label">Specialization</span>
+            <span class="value ml-auto">Environment Art · Digital Painting</span>
+          </div>
+          <div class="info-row">
+            <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+            <span class="label">Birthday</span>
+            <span class="value ml-auto">April 27</span>
+          </div>
+          <div class="info-row">
+            <div class="icon"><i class="fas fa-user-clock"></i></div>
+            <span class="label">Member Since</span>
+            <span class="value ml-auto">16 years ago</span>
+          </div>
+          <div class="info-row">
+            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+            <span class="label">Location</span>
+            <span class="value ml-auto">Japan</span>
+          </div>
+          <div class="info-row">
+            <div class="icon" style="color:#1d9bf0;"><i class="fab fa-twitter"></i></div>
+            <span class="label">Twitter</span>
+            <a href="https://twitter.com/ArsXC" class="value ml-auto" style="color:#00e59b;" target="_blank">@ArsXC</a>
+          </div>
+          <div class="info-row">
+            <div class="icon"><i class="fas fa-link"></i></div>
+            <span class="label">Website</span>
+            <a href="#" class="value ml-auto" style="color:#00e59b;">hipolink.me/arsenixc</a>
+          </div>
         </div>
-    </footer>
+      </div>
+
+      <!-- Bio -->
+      <div class="section-card">
+        <h2 class="section-card-title"><i class="fas fa-scroll icon"></i> Bio</h2>
+        <div class="bio-alert mb-4">
+          <p class="alert-title">⚠ DO NOT USE MY WORKS</p>
+          <p class="alert-body">DO NOT USE MY WORKS ON YOUTUBE COVERS OR OTHER GAMES etc. NO PERMISSION FOR ALL WORKS!</p>
+        </div>
+        <p class="text-sm leading-relaxed" style="color:#c8c8d8;">
+          Most of my pictures in galleries, especially backgrounds, are part of commercial projects. Other companies have commercial rights to use these images, so they cannot be used elsewhere without explicit permission.
+        </p>
+        <div class="mt-4 pt-4 border-t" style="border-color:#1a1b26;">
+          <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:#8b8ca8;">Favourite Visual Artist</p>
+          <p class="text-sm" style="color:#e8e8f0;">新海誠, 三輪, 男鹿和雄</p>
+        </div>
+        <div class="mt-3 pt-3 border-t" style="border-color:#1a1b26;">
+          <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:#8b8ca8;">Favourite Bands / Musical Artists</p>
+          <p class="text-sm" style="color:#e8e8f0;">random playlist</p>
+        </div>
+        <div class="mt-3 pt-3 border-t" style="border-color:#1a1b26;">
+          <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:#8b8ca8;">Tools</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#e8e8f0;">Photoshop</span>
+            <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#e8e8f0;">Clip Studio Paint</span>
+            <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#e8e8f0;">3ds Max</span>
+            <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#e8e8f0;">V-Ray</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics -->
+    <section id="stats" class="section-card fade-in" style="animation-delay:0.1s;">
+      <h2 class="section-card-title"><i class="fas fa-chart-bar icon"></i> Statistics</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="stat-chip">
+          <div class="val">1.7M</div>
+          <div class="lbl">Pageviews</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">467</div>
+          <div class="lbl">Artworks</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">67.3K</div>
+          <div class="lbl">Watchers</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">193</div>
+          <div class="lbl">Watching</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">1.3K</div>
+          <div class="lbl">Favourites</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">6.2K</div>
+          <div class="lbl">Comments Made</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">2.3K</div>
+          <div class="lbl">Comments Received</div>
+        </div>
+        <div class="stat-chip">
+          <div class="val">16yr</div>
+          <div class="lbl">On Platform</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Watchers -->
+    <section id="watchers" class="section-card fade-in" style="animation-delay:0.15s;">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="section-card-title mb-0"><i class="fas fa-users icon"></i> Watchers <span class="text-sm font-normal" style="color:#8b8ca8;">67,348</span></h2>
+        <div class="da-search" style="max-width:200px;">
+          <i class="fas fa-search" style="color:#8b8ca8; font-size:0.75rem;"></i>
+          <input type="text" placeholder="Search watchers..." style="width:140px;" />
+        </div>
+      </div>
+      <div class="watcher-grid">
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#00e59b,#0099ff); color:#06070d;">S</div>
+          <span class="watcher-name">SkyArtist99</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#7c3aed,#db2777); color:#fff;">N</div>
+          <span class="watcher-name">NightDrawer</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#f59e0b,#ef4444); color:#06070d;">M</div>
+          <span class="watcher-name">mikazukin</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#10b981,#3b82f6); color:#fff;">D</div>
+          <span class="watcher-name">dmkdtymkdtym</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#8b5cf6,#06b6d4); color:#fff;">A</div>
+          <span class="watcher-name">ArtLover_Ace</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#f472b6,#a78bfa); color:#fff;">K</div>
+          <span class="watcher-name">KoroMochi</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#0ea5e9,#14b8a6); color:#fff;">T</div>
+          <span class="watcher-name">TatsumiArt</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#f97316,#ef4444); color:#fff;">R</div>
+          <span class="watcher-name">Ryo_Digital</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#22d3ee,#6366f1); color:#fff;">L</div>
+          <span class="watcher-name">LunaPixel</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#84cc16,#10b981); color:#fff;">H</div>
+          <span class="watcher-name">HanakoDraw</span>
+        </div>
+      </div>
+      <button class="mt-4 w-full py-2.5 rounded-xl border text-sm transition-all" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b';" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8';">
+        Load More Watchers
+      </button>
+    </section>
+
+    <!-- Watching -->
+    <section id="watching" class="section-card fade-in" style="animation-delay:0.2s;">
+      <h2 class="section-card-title"><i class="fas fa-eye icon"></i> Watching <span class="text-sm font-normal" style="color:#8b8ca8;">193</span></h2>
+      <div class="watcher-grid">
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;">Y</div>
+          <span class="watcher-name">Yoshida_Art</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#ec4899,#f97316); color:#fff;">C</div>
+          <span class="watcher-name">CloudPainter</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#14b8a6,#3b82f6); color:#fff;">N</div>
+          <span class="watcher-name">NeonBlush</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#f59e0b,#10b981); color:#06070d;">G</div>
+          <span class="watcher-name">GhibliDreams</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#a78bfa,#f472b6); color:#fff;">P</div>
+          <span class="watcher-name">PastelStudio</span>
+        </div>
+        <div class="watcher-card">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#0284c7,#0ea5e9); color:#fff;">Z</div>
+          <span class="watcher-name">ZeroCity</span>
+        </div>
+      </div>
+      <button class="mt-4 w-full py-2.5 rounded-xl border text-sm transition-all" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b';" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8';">
+        Load More
+      </button>
+    </section>
+
+    <!-- Groups -->
+    <section id="groups" class="section-card fade-in" style="animation-delay:0.25s;">
+      <h2 class="section-card-title"><i class="fas fa-layer-group icon"></i> Groups</h2>
+      <div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-cube" style="color:#00e59b;font-size:0.75rem;"></i></div>
+          <span class="name">3D-Anime</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-dragon" style="color:#7c3aed;font-size:0.75rem;"></i></div>
+          <span class="name">Digital-Art-Fantasy</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-star" style="color:#f59e0b;font-size:0.75rem;"></i></div>
+          <span class="name">Digital-Beauty</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-circle" style="color:#ef4444;font-size:0.75rem;"></i></div>
+          <span class="name">RedBlackWhite</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-rocket" style="color:#0ea5e9;font-size:0.75rem;"></i></div>
+          <span class="name">SciFi-Fantasy-Art</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-paint-brush" style="color:#ec4899;font-size:0.75rem;"></i></div>
+          <span class="name">Anime-Manga</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-city" style="color:#10b981;font-size:0.75rem;"></i></div>
+          <span class="name">Urban-Environments</span>
+        </div>
+        <div class="group-tag">
+          <div class="icon"><i class="fas fa-tree" style="color:#84cc16;font-size:0.75rem;"></i></div>
+          <span class="name">Nature-Art-Collective</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Badges -->
+    <section id="badges" class="section-card fade-in" style="animation-delay:0.3s;">
+      <h2 class="section-card-title"><i class="fas fa-medal icon"></i> Badges</h2>
+
+      <div class="badge-group">
+        <p class="badge-group-name">Artisan Badges</p>
+        <div class="flex flex-wrap">
+          <div class="badge-item"><span class="badge-icon">🎨</span><div class="badge-info"><div class="badge-name">Painter's Palette</div><div class="badge-count">×4 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">✏️</span><div class="badge-info"><div class="badge-name">Pencil Master</div><div class="badge-count">×7 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">🖼️</span><div class="badge-info"><div class="badge-name">Gallery Master</div><div class="badge-count">×3 received</div></div></div>
+        </div>
+      </div>
+
+      <div class="badge-group">
+        <p class="badge-group-name">Gem Badges</p>
+        <div class="flex flex-wrap">
+          <div class="badge-item"><span class="badge-icon">💎</span><div class="badge-info"><div class="badge-name">Diamond</div><div class="badge-count">×19 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">🌟</span><div class="badge-info"><div class="badge-name">Emerald</div><div class="badge-count">×12 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">💰</span><div class="badge-info"><div class="badge-name">Gold Coin</div><div class="badge-count">×27 received</div></div></div>
+        </div>
+      </div>
+
+      <div class="badge-group">
+        <p class="badge-group-name">Social Badges</p>
+        <div class="flex flex-wrap">
+          <div class="badge-item"><span class="badge-icon">💖</span><div class="badge-info"><div class="badge-name">Heart</div><div class="badge-count">×35 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">🎉</span><div class="badge-info"><div class="badge-name">Confetti</div><div class="badge-count">×12 received</div></div></div>
+          <div class="badge-item"><span class="badge-icon">🏆</span><div class="badge-info"><div class="badge-name">Trophy</div><div class="badge-count">×8 received</div></div></div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="mt-4 pt-4 border-t" style="border-color:#1a1b26;">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color:#8b8ca8;">Recent Badge Activity</p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background: linear-gradient(135deg,#f59e0b,#ef4444); color:#06070d;">G</div>
+            <span style="color:#8b8ca8;"><span class="font-semibold" style="color:#e8e8f0;">Gnomester47</span> gave <span class="font-semibold" style="color:#00e59b;">arsenixc</span> a <span class="font-semibold text-yellow-400">Gold Coin</span> badge</span>
+            <span class="ml-auto text-xs" style="color:#8b8ca8;">Yesterday</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background: linear-gradient(135deg,#7c3aed,#db2777); color:#fff;">L</div>
+            <span style="color:#8b8ca8;"><span class="font-semibold" style="color:#e8e8f0;">LunaPixel</span> gave <span class="font-semibold" style="color:#00e59b;">arsenixc</span> a <span class="font-semibold text-blue-400">Diamond</span> badge</span>
+            <span class="ml-auto text-xs" style="color:#8b8ca8;">3 days ago</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background: linear-gradient(135deg,#00e59b,#0099ff); color:#06070d;">S</div>
+            <span style="color:#8b8ca8;"><span class="font-semibold" style="color:#e8e8f0;">SkyArtist99</span> gave <span class="font-semibold" style="color:#00e59b;">arsenixc</span> a <span class="font-semibold text-pink-400">Heart</span> badge</span>
+            <span class="ml-auto text-xs" style="color:#8b8ca8;">1 week ago</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comments -->
+    <section id="comments" class="fade-in" style="animation-delay:0.35s;">
+      <div class="section-card">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="section-card-title mb-0"><i class="fas fa-comments icon"></i> Profile Comments <span class="text-sm font-normal" style="color:#8b8ca8;">2,347</span></h2>
+        </div>
+        <!-- Form -->
+        <div class="flex gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="" class="w-9 h-9 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1">
+            <textarea rows="3" class="w-full rounded-lg p-3 text-sm outline-none resize-none transition-colors" placeholder="Join the community to add your comment..." style="background:#1a1b26; border:1px solid #2a2b3d; color:#e8e8f0; font-family:'Inter',sans-serif;" onfocus="this.style.borderColor='#00e59b'" onblur="this.style.borderColor='#2a2b3d'"></textarea>
+            <div class="flex justify-end mt-2">
+              <button class="da-btn-primary text-xs px-4 py-1.5">Comment</button>
+            </div>
+          </div>
+        </div>
+        <!-- List -->
+        <div class="border rounded-xl overflow-hidden" style="border-color:#1a1b26;">
+          <div class="comment-item">
+            <div class="comment-avatar w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style="background: linear-gradient(135deg,#00e59b,#0099ff); color:#06070d;">A</div>
+            <div class="comment-body">
+              <div class="flex items-center gap-2"><span class="comment-user">annasworld9999</span><span class="comment-time">Mar 7, 2025</span></div>
+              <p class="comment-text">Amazing art!!! Your cityscapes always take my breath away 😍</p>
+              <div class="comment-actions">
+                <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i>12</button>
+                <button class="comment-action-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style="background: linear-gradient(135deg,#7c3aed,#db2777); color:#fff;">D</div>
+            <div class="comment-body">
+              <div class="flex items-center gap-2"><span class="comment-user">dojdinka</span><span class="comment-time">Aug 28, 2024</span></div>
+              <p class="comment-text">❤️❤️❤️ Your konbini work is unreal!</p>
+              <div class="comment-actions">
+                <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i>5</button>
+                <button class="comment-action-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style="background: linear-gradient(135deg,#f59e0b,#ef4444); color:#06070d;">M</div>
+            <div class="comment-body">
+              <div class="flex items-center gap-2"><span class="comment-user">mikazukin_art</span><span class="comment-time">Jun 15, 2024</span></div>
+              <p class="comment-text">Your konbini piece is absolutely stunning! The lighting is phenomenal. Have you done any tutorials on environment lighting?</p>
+              <div class="comment-actions">
+                <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i>8</button>
+                <button class="comment-action-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+          <div class="text-center py-3">
+            <button class="text-sm" style="color:#00e59b;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Load more comments</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /right col -->
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#080910; border-top: 1px solid #1a1b26;" class="mt-8">
+  <div class="max-w-screen-xl mx-auto px-4 py-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style="color:#8b8ca8;">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded flex items-center justify-center" style="background:#00e59b;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="text-white font-semibold">ArtGallery</span>
+        <span>© 2025 All rights reserved.</span>
+      </div>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms</a>
+        <a href="#" class="hover:text-white transition-colors">Help</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setActiveTab(el) {
+    document.querySelectorAll('.about-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Smooth scroll highlight
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    document.querySelectorAll('.about-tab').forEach(tab => {
+      tab.classList.remove('active');
+      if (tab.getAttribute('href') === '#' + current) tab.classList.add('active');
+    });
+  });
+</script>
 </body>
-</html> 
+</html>

@@ -1,240 +1,752 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsenixc Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arsenixc on ArtGallery — Digital Artist</title>
+  <meta name="description" content="arsenixc is a professional digital environment artist. Browse 467 artworks spanning futuristic cities, anime characters, and atmospheric landscapes." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            da: {
+              bg:      '#06070d',
+              surface: '#111218',
+              card:    '#1a1b26',
+              border:  '#2a2b3d',
+              green:   '#00e59b',
+              greenDim:'#00c984',
+              text:    '#e8e8f0',
+              muted:   '#8b8ca8',
+              hover:   '#252640',
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.5s ease forwards',
+            'shimmer': 'shimmer 2s linear infinite',
+          },
+          keyframes: {
+            fadeUp: { '0%': { opacity: 0, transform: 'translateY(16px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #06070d; color: #e8e8f0; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #111218; }
+    ::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e59b; }
+
+    /* Navbar */
+    .da-nav { background: rgba(6,7,13,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1b26; position: sticky; top: 0; z-index: 100; }
+    .da-nav-link { font-size: 0.9rem; color: #8b8ca8; transition: color 0.2s; padding: 0.25rem 0.5rem; border-radius: 6px; }
+    .da-nav-link:hover { color: #e8e8f0; }
+    .da-search { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.2s; }
+    .da-search:focus-within { border-color: #00e59b; }
+    .da-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 0.875rem; width: 200px; }
+    .da-search input::placeholder { color: #8b8ca8; }
+    .da-btn-primary { background: #00e59b; color: #06070d; font-weight: 600; border: none; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+    .da-btn-primary:hover { background: #00c984; transform: translateY(-1px); }
+    .da-btn-outline { background: transparent; color: #e8e8f0; font-weight: 500; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: border-color 0.2s, background 0.2s; }
+    .da-btn-outline:hover { border-color: #00e59b; background: rgba(0,229,155,0.08); }
+
+    /* Banner & Profile */
+    .profile-banner { position: relative; height: 340px; overflow: hidden; }
+    .profile-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #06070d 0%, rgba(6,7,13,0.6) 50%, transparent 100%); }
+    .profile-info-bar { background: #111218; border-bottom: 1px solid #1a1b26; }
+    .avatar-ring { border: 3px solid #00e59b; border-radius: 50%; padding: 2px; }
+
+    /* Profile Tab Nav */
+    .profile-tab { font-size: 0.875rem; font-weight: 500; color: #8b8ca8; padding: 1rem 1.25rem; border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .profile-tab:hover { color: #e8e8f0; }
+    .profile-tab.active { color: #00e59b; border-bottom-color: #00e59b; }
+
+    /* Gallery Grid - Masonry-like */
+    .gallery-grid { columns: 4; column-gap: 12px; }
+    .gallery-grid .card { break-inside: avoid; margin-bottom: 12px; }
+    @media (max-width: 1280px) { .gallery-grid { columns: 3; } }
+    @media (max-width: 900px)  { .gallery-grid { columns: 2; } }
+    @media (max-width: 600px)  { .gallery-grid { columns: 1; } }
+
+    /* Art Card */
+    .art-card { background: #1a1b26; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; position: relative; }
+    .art-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+    .art-card:hover .art-overlay { opacity: 1; }
+    .art-card img { width: 100%; display: block; }
+    .art-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,7,13,0.9) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; }
+    .art-card-info { padding: 0.75rem; }
+    .stat-badge { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #8b8ca8; }
+    .stat-badge i { font-size: 0.65rem; }
+
+    /* Section styles */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .section-title { font-size: 1.125rem; font-weight: 700; }
+    .section-link { font-size: 0.8125rem; color: #00e59b; text-decoration: none; }
+    .section-link:hover { text-decoration: underline; }
+
+    /* Sidebar card */
+    .sidebar-card { background: #111218; border: 1px solid #1a1b26; border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+    .sidebar-card-title { font-size: 0.8125rem; font-weight: 600; color: #8b8ca8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+
+    /* Comment */
+    .comment-item { display: flex; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid #1a1b26; }
+    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
+    .comment-body { flex: 1; }
+    .comment-user { font-size: 0.875rem; font-weight: 600; color: #e8e8f0; }
+    .comment-time { font-size: 0.75rem; color: #8b8ca8; }
+    .comment-text { font-size: 0.875rem; color: #c8c8d8; margin-top: 0.25rem; line-height: 1.5; }
+    .comment-actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .comment-action-btn { background: none; border: none; font-size: 0.75rem; color: #8b8ca8; cursor: pointer; transition: color 0.2s; padding: 0; }
+    .comment-action-btn:hover { color: #00e59b; }
+
+    /* Watcher grid */
+    .watcher-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-radius: 6px; transition: background 0.2s; cursor: pointer; }
+    .watcher-item:hover { background: #1a1b26; }
+    .watcher-avatar { width: 40px; height: 40px; border-radius: 50%; background: #2a2b3d; object-fit: cover; }
+    .watcher-name { font-size: 0.8125rem; color: #e8e8f0; }
+
+    /* Badge */
+    .badge-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem; background: #1a1b26; border-radius: 8px; }
+    .badge-icon { font-size: 1.75rem; }
+    .badge-name { font-size: 0.75rem; font-weight: 600; color: #e8e8f0; text-align: center; }
+    .badge-count { font-size: 0.7rem; color: #8b8ca8; }
+
+    /* Core label */
+    .core-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: #06070d; font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+
+    /* Spotlight */
+    .spotlight-card { background: #111218; border: 1px solid #1a1b26; border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+    .spotlight-card:hover { border-color: #00e59b33; }
+    .spotlight-card img { width: 100%; height: 220px; object-fit: cover; }
+
+    /* Stats row */
+    .stat-chip { background: #1a1b26; border-radius: 8px; padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+    .stat-chip .val { font-size: 1.25rem; font-weight: 700; color: #e8e8f0; }
+    .stat-chip .lbl { font-size: 0.7rem; color: #8b8ca8; margin-top: 2px; }
+
+    /* Textarea */
+    .da-textarea { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 8px; color: #e8e8f0; padding: 0.75rem; font-size: 0.875rem; width: 100%; resize: none; transition: border-color 0.2s; outline: none; font-family: 'Inter', sans-serif; }
+    .da-textarea:focus { border-color: #00e59b; }
+    .da-textarea::placeholder { color: #8b8ca8; }
+
+    /* Featured Gallery Scroll */
+    .featured-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+    .featured-scroll::-webkit-scrollbar { height: 4px; }
+    .featured-scroll .feat-card { flex: 0 0 200px; scroll-snap-align: start; }
+
+    /* Fade in animation on load */
+    .fade-in { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+    .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in:nth-child(2) { animation-delay: 0.1s; }
+    .fade-in:nth-child(3) { animation-delay: 0.15s; }
+    .fade-in:nth-child(4) { animation-delay: 0.2s; }
+    .fade-in:nth-child(5) { animation-delay: 0.25s; }
+    .fade-in:nth-child(6) { animation-delay: 0.3s; }
+    .fade-in:nth-child(7) { animation-delay: 0.35s; }
+    .fade-in:nth-child(8) { animation-delay: 0.4s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Tooltip */
+    .tooltip { position: relative; }
+    .tooltip:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1a1b26; border: 1px solid #2a2b3d; color: #e8e8f0; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 50; }
+
+    /* Loading skeleton */
+    .skeleton { background: linear-gradient(90deg, #1a1b26 25%, #252640 50%, #1a1b26 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Header -->
-    <header class="relative h-64 sm:h-80 md:h-96">
-        <div class="absolute inset-0">
-            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/Future-city-948674581" 
-                 alt="Banner" 
-                 class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900"></div>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="da-nav">
+  <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-4 h-14">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: #00e59b;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="font-bold text-white text-lg hidden sm:block">ArtGallery</span>
+    </a>
+    <!-- Search -->
+    <div class="da-search flex-1 max-w-xs hidden md:flex">
+      <i class="fas fa-search text-da-muted text-sm"></i>
+      <input type="text" placeholder="Search art, artists..." />
+    </div>
+    <div class="flex-1"></div>
+    <!-- Nav Links -->
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="#" class="da-nav-link">Explore</a>
+      <a href="gallery.html" class="da-nav-link">Gallery</a>
+      <a href="about.html" class="da-nav-link">About</a>
+    </div>
+    <!-- Actions -->
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button class="da-btn-outline hidden sm:block">Watch</button>
+      <button class="da-btn-primary">+ Submit</button>
+      <div class="w-8 h-8 rounded-full overflow-hidden cursor-pointer border border-da-border hover:border-da-green transition-colors">
+        <img src="public/images/artist_avatar.jpg" alt="User" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== BANNER ===================== -->
+<div class="profile-banner">
+  <img src="public/images/banner_hero.jpg" alt="Profile Banner" />
+</div>
+
+<!-- ===================== PROFILE INFO BAR ===================== -->
+<div class="profile-info-bar">
+  <div class="max-w-screen-xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 py-4 -mt-16 relative z-10">
+      <!-- Avatar -->
+      <div class="avatar-ring flex-shrink-0">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc"
+             class="w-24 h-24 rounded-full object-cover block" />
+      </div>
+      <!-- Name & info -->
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-1">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-2xl font-bold text-white">arsenixc</h1>
+            <span class="core-badge">CORE</span>
+            <span class="text-da-muted text-sm">· Artist // Professional // Digital Art</span>
+          </div>
+          <div class="flex flex-wrap gap-4 mt-1 text-sm">
+            <span class="text-da-muted"><span class="text-white font-semibold">67.3K</span> Watchers</span>
+            <span class="text-da-muted"><span class="text-white font-semibold">467</span> Artworks</span>
+            <span class="text-da-muted"><span class="text-white font-semibold">1.7M</span> Pageviews</span>
+            <span class="text-da-muted"><span class="text-white font-semibold">1.3K</span> Likes</span>
+          </div>
         </div>
-        
-        <!-- Profile Info -->
-        <div class="absolute bottom-0 left-0 p-4 md:p-8 flex flex-col sm:flex-row items-center sm:items-end space-y-4 sm:space-y-0 sm:space-x-4 w-full">
-            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/avatar/arsenixc" 
-                 alt="arsenixc" 
-                 class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-white">
-            <div class="text-center sm:text-left">
-                <div class="flex items-center justify-center sm:justify-start space-x-2">
-                    <h1 class="text-3xl md:text-4xl font-bold">arsenixc</h1>
-                    <span class="bg-yellow-600 text-xs md:text-sm px-2 py-1 rounded">CORE</span>
-                </div>
-                <p class="text-gray-300">Environment Artist</p>
-                <div class="flex flex-wrap justify-center sm:justify-start gap-4 mt-2 text-sm md:text-base">
-                    <span>67.1K Watchers</span>
-                    <span>465 Deviations</span>
-                    <span>1.7M Pageviews</span>
-                </div>
-            </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button class="da-btn-outline" id="btn-watch" onclick="toggleWatch(this)">
+            <i class="fas fa-eye mr-1"></i> Watch
+          </button>
+          <button class="da-btn-primary">
+            <i class="fas fa-share-alt mr-1"></i> Share
+          </button>
+          <button class="w-9 h-9 flex items-center justify-center rounded-full border border-da-border hover:border-da-green transition-colors" style="background: #1a1b26;">
+            <i class="fas fa-ellipsis-h text-da-muted text-sm"></i>
+          </button>
         </div>
-    </header>
+      </div>
+    </div>
 
-    <!-- Navigation -->
-    <nav class="bg-gray-800 border-b border-gray-700 overflow-x-auto">
-        <div class="container mx-auto px-4">
-            <ul class="flex whitespace-nowrap">
-                <li><a href="#" class="py-4 px-3 md:px-4 inline-block text-green-400 border-b-2 border-green-400">Home</a></li>
-                <li><a href="#" class="py-4 px-3 md:px-4 inline-block hover:text-green-400">Gallery</a></li>
-                <li><a href="#" class="py-4 px-3 md:px-4 inline-block hover:text-green-400">Favourites</a></li>
-                <li><a href="#" class="py-4 px-3 md:px-4 inline-block hover:text-green-400">Posts</a></li>
-                <li><a href="#" class="py-4 px-3 md:px-4 inline-block hover:text-green-400">About</a></li>
-            </ul>
+    <!-- Tab Navigation -->
+    <div class="flex overflow-x-auto gap-0 border-b border-da-border" style="border-color:#1a1b26">
+      <a href="demo-author.html" class="profile-tab active" id="tab-home">Home</a>
+      <a href="gallery.html"    class="profile-tab" id="tab-gallery">Gallery</a>
+      <a href="favourites.html" class="profile-tab">Favourites</a>
+      <a href="posts.html"      class="profile-tab">Posts</a>
+      <a href="about.html"     class="profile-tab">About</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main class="max-w-screen-xl mx-auto px-4 py-6 flex gap-6">
+
+  <!-- LEFT COLUMN (Main) -->
+  <div class="flex-1 min-w-0">
+
+    <!-- Featured/Spotlight artworks -->
+    <section class="mb-8">
+      <div class="section-header">
+        <span class="section-title">Deviation Spotlight</span>
+        <a href="gallery.html" class="section-link">See All →</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="spotlight-card md:col-span-2">
+          <img src="public/images/banner_hero.jpg" alt="Konbini Interior" class="w-full object-cover" style="height:260px;" />
+          <div class="p-4">
+            <h3 class="font-semibold text-white">Konbini Interior</h3>
+            <div class="flex items-center gap-4 mt-2">
+              <span class="stat-badge"><i class="fas fa-eye"></i> 562K</span>
+              <span class="stat-badge"><i class="fas fa-heart"></i> 18.4K</span>
+              <span class="stat-badge"><i class="fas fa-comment"></i> 234</span>
+            </div>
+          </div>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6 md:py-8">
-        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Future city</h2>
-        
-        <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            <!-- Gallery Item -->
-            <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/Future-city-948674581" 
-                     alt="Future City" 
-                     class="w-full h-40 sm:h-48 object-cover">
-                <div class="p-3 md:p-4">
-                    <h3 class="font-semibold text-sm md:text-base">Future City</h3>
-                    <p class="text-gray-400 text-xs md:text-sm">26.7K Views</p>
-                </div>
+        <div class="flex flex-col gap-4">
+          <div class="spotlight-card flex-1">
+            <img src="public/images/artwork_char1.jpg" alt="Wink Witch" class="w-full object-cover" style="height:180px;" />
+            <div class="p-3">
+              <h3 class="font-semibold text-white text-sm">Wink Witch WRB</h3>
+              <div class="flex items-center gap-3 mt-1">
+                <span class="stat-badge"><i class="fas fa-eye"></i> 23.7K</span>
+                <span class="stat-badge"><i class="fas fa-heart"></i> 1.2K</span>
+              </div>
             </div>
-            
-            <!-- Thêm các gallery items tương tự -->
-            <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/Future-city-948674581" 
-                     alt="Future City" 
-                     class="w-full h-40 sm:h-48 object-cover">
-                <div class="p-3 md:p-4">
-                    <h3 class="font-semibold text-sm md:text-base">Night City</h3>
-                    <p class="text-gray-400 text-xs md:text-sm">22.3K Views</p>
-                </div>
+          </div>
+          <div class="spotlight-card flex-1">
+            <img src="public/images/artwork_char2.jpg" alt="2B Android" class="w-full object-cover" style="height:180px;" />
+            <div class="p-3">
+              <h3 class="font-semibold text-white text-sm">2B & Small Stubbys</h3>
+              <div class="flex items-center gap-3 mt-1">
+                <span class="stat-badge"><i class="fas fa-eye"></i> 14.9K</span>
+                <span class="stat-badge"><i class="fas fa-heart"></i> 892</span>
+              </div>
             </div>
-
-            <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/Future-city-948674581" 
-                     alt="Future City" 
-                     class="w-full h-40 sm:h-48 object-cover">
-                <div class="p-3 md:p-4">
-                    <h3 class="font-semibold text-sm md:text-base">Cyber City</h3>
-                    <p class="text-gray-400 text-xs md:text-sm">19.8K Views</p>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Featured Gallery Section -->
-        <section class="mt-8 md:mt-12">
-            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                <span>Featured Gallery</span>
-                <a href="#" class="ml-auto text-sm text-blue-400 hover:underline">See All</a>
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/shining-nikki" 
-                         alt="Shining Nikki" 
-                         class="w-full h-40 sm:h-48 object-cover">
-                    <div class="p-3 md:p-4">
-                        <h3 class="font-semibold text-sm md:text-base">Shining Nikki Headquarter</h3>
-                        <p class="text-gray-400 text-xs md:text-sm">10.1K Views</p>
-                    </div>
-                </div>
-                <!-- More Featured Items -->
-            </div>
-        </section>
-
-        <!-- WRB Section -->
-        <section class="mt-8 md:mt-12">
-            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                <span>WRB</span>
-                <a href="#" class="ml-auto text-sm text-blue-400 hover:underline">See All</a>
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/wink-witch-wrb" 
-                         alt="Wink Witch WRB" 
-                         class="w-full h-40 sm:h-48 object-cover">
-                    <div class="p-3 md:p-4">
-                        <h3 class="font-semibold text-sm md:text-base">Wink Witch WRB</h3>
-                        <p class="text-gray-400 text-xs md:text-sm">23.7K Views</p>
-                    </div>
-                </div>
-                <!-- More WRB Items -->
-            </div>
-        </section>
-
-        <!-- Deviation Spotlight -->
-        <section class="mt-8 md:mt-12">
-            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Deviation Spotlight</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <div class="bg-gray-800 rounded-lg overflow-hidden">
-                    <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/arsenixc/art/akihabara" 
-                         alt="Akihabara South Exit night" 
-                         class="w-full h-48 md:h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-semibold text-base md:text-lg">Akihabara South Exit night</h3>
-                        <p class="text-gray-400 text-sm">562K Views</p>
-                    </div>
-                </div>
-                <!-- More Spotlight Items -->
-            </div>
-        </section>
-
-        <!-- Comments Section -->
-        <section class="mt-8 md:mt-12">
-            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Profile Comments <span class="text-gray-400">2.3K</span></h2>
-            
-            <!-- Comment Form -->
-            <div class="bg-gray-800 rounded-lg p-4 mb-6">
-                <div class="flex items-start space-x-4">
-                    <div class="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0"></div>
-                    <div class="flex-grow">
-                        <textarea 
-                            placeholder="Join the community to add your comment..." 
-                            class="w-full bg-gray-700 rounded-lg p-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-                            rows="3"
-                        ></textarea>
-                        <div class="mt-2 flex justify-end">
-                            <button class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors">
-                                Comment
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Comments List -->
-            <div class="space-y-4">
-                <!-- Comment Item -->
-                <div class="bg-gray-800 rounded-lg p-4">
-                    <div class="flex items-start space-x-4">
-                        <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/avatar/annasworld9999" 
-                             alt="annasworld9999" 
-                             class="w-10 h-10 rounded-full">
-                        <div class="flex-grow">
-                            <div class="flex items-center">
-                                <h3 class="font-semibold text-sm">annasworld9999</h3>
-                                <span class="text-gray-400 text-xs ml-2">Mar 7, 2025</span>
-                            </div>
-                            <p class="text-sm mt-1">Amazing art!!!</p>
-                            <button class="text-sm text-gray-400 mt-2 hover:text-white">Reply</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- More Comments -->
-                <div class="bg-gray-800 rounded-lg p-4">
-                    <div class="flex items-start space-x-4">
-                        <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/avatar/dojdinka" 
-                             alt="dojdinka" 
-                             class="w-10 h-10 rounded-full">
-                        <div class="flex-grow">
-                            <div class="flex items-center">
-                                <h3 class="font-semibold text-sm">dojdinka</h3>
-                                <span class="text-gray-400 text-xs ml-2">Aug 28, 2024</span>
-                            </div>
-                            <p class="text-sm mt-1">❤️</p>
-                            <button class="text-sm text-gray-400 mt-2 hover:text-white">Reply</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <button class="text-blue-400 hover:underline text-sm">Load more comments</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="mt-8 md:mt-12">
-            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">About arsenixc</h2>
-            <div class="bg-gray-800 rounded-lg p-4 md:p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
-                    <span class="text-sm md:text-base">Artist // Professional // Digital Art</span>
-                </div>
-                <div class="flex flex-wrap gap-4 text-gray-400 text-sm md:text-base">
-                    <span>Apr 27</span>
-                    <span>Deviant for 16 years</span>
-                    <a href="https://twitter.com/ArsXC" class="text-blue-400 hover:underline">twitter.com/ArsXC</a>
-                </div>
-                <div class="mt-4">
-                    <p class="text-red-400 font-bold text-sm md:text-base">DO NOT USE MY WORKS ON YOUTUBE COVERS OR OTHER GAMES etc. NO PERMISSION FOR ALL WORKS!</p>
-                    <p class="mt-2 text-gray-300 text-sm md:text-base">Most of my pictures in galleries, especially backgrounds is part of commercial projects, other companies have commercial rights to use this images, so its cannot use any else.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 mt-8 md:mt-12 py-6 md:py-8">
-        <div class="container mx-auto px-4 text-center text-gray-400 text-sm md:text-base">
-            <p>&copy; 2025 arsenixc. All rights reserved.</p>
+    <!-- Featured Gallery Sections -->
+    <section class="mb-8">
+      <div class="section-header">
+        <span class="section-title">Future City Series</span>
+        <a href="gallery.html" class="section-link">See All →</a>
+      </div>
+      <div class="featured-scroll">
+        <div class="feat-card art-card">
+          <img src="public/images/artwork_city1.jpg" alt="Future City" class="w-full" style="height:140px; object-fit:cover;" />
+          <div class="art-card-info">
+            <p class="text-sm font-semibold text-white truncate">Future City</p>
+            <div class="flex gap-2 mt-1"><span class="stat-badge"><i class="fas fa-eye"></i> 26.7K</span></div>
+          </div>
         </div>
-    </footer>
+        <div class="feat-card art-card">
+          <img src="public/images/artwork_city2.jpg" alt="Rainy Alley" class="w-full" style="height:140px; object-fit:cover;" />
+          <div class="art-card-info">
+            <p class="text-sm font-semibold text-white truncate">Rainy Alley Night</p>
+            <div class="flex gap-2 mt-1"><span class="stat-badge"><i class="fas fa-eye"></i> 31.2K</span></div>
+          </div>
+        </div>
+        <div class="feat-card art-card">
+          <img src="public/images/banner_hero.jpg" alt="Konbini" class="w-full" style="height:140px; object-fit:cover;" />
+          <div class="art-card-info">
+            <p class="text-sm font-semibold text-white truncate">Konbini Street</p>
+            <div class="flex gap-2 mt-1"><span class="stat-badge"><i class="fas fa-eye"></i> 44.8K</span></div>
+          </div>
+        </div>
+        <div class="feat-card art-card">
+          <img src="public/images/artwork_interior1.jpg" alt="Cozy Cafe" class="w-full" style="height:140px; object-fit:cover;" />
+          <div class="art-card-info">
+            <p class="text-sm font-semibold text-white truncate">Cozy Cafe</p>
+            <div class="flex gap-2 mt-1"><span class="stat-badge"><i class="fas fa-eye"></i> 19.5K</span></div>
+          </div>
+        </div>
+        <div class="feat-card art-card">
+          <img src="public/images/artwork_nature1.jpg" alt="Sakura Dawn" class="w-full" style="height:140px; object-fit:cover;" />
+          <div class="art-card-info">
+            <p class="text-sm font-semibold text-white truncate">Sakura Dawn</p>
+            <div class="flex gap-2 mt-1"><span class="stat-badge"><i class="fas fa-eye"></i> 18.1K</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- All Deviations (Masonry) -->
+    <section class="mb-8">
+      <div class="section-header">
+        <span class="section-title">All Deviations <span class="text-da-muted font-normal text-sm">467</span></span>
+        <div class="flex items-center gap-2">
+          <select class="bg-da-card border border-da-border text-da-muted text-sm rounded-lg px-3 py-1.5 outline-none focus:border-da-green" style="background:#1a1b26; border-color:#2a2b3d; color:#8b8ca8;">
+            <option>Newest First</option>
+            <option>Most Viewed</option>
+            <option>Most Liked</option>
+          </select>
+        </div>
+      </div>
+      <div class="gallery-grid">
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/banner_hero.jpg" alt="Konbini Interior" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Konbini Interior</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 562K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 18K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_char1.jpg" alt="Wink Witch" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Wink Witch WRB</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 23.7K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 1.2K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_city1.jpg" alt="Future City" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Future City</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 26.7K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 945</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_nature1.jpg" alt="Cherry Blossom" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Sakura Dawn</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 18.1K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 762</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_char2.jpg" alt="Android Girl" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">2B & Small Stubbys</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 14.9K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 892</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_city2.jpg" alt="Rainy Alley" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Rainy Alley Night</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 31.2K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 1.5K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/artwork_interior1.jpg" alt="Cozy Cafe" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Mokuren Café</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 19.5K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 834</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card fade-in">
+          <div class="art-card">
+            <img src="public/images/banner_hero.jpg" alt="Neo Tokyo" style="filter: hue-rotate(30deg) saturate(1.3);" />
+            <div class="art-overlay">
+              <p class="text-white font-semibold text-sm">Neo Tokyo Street</p>
+              <div class="flex gap-3 mt-1">
+                <span class="stat-badge text-white"><i class="fas fa-eye"></i> 38.4K</span>
+                <span class="stat-badge text-white"><i class="fas fa-heart"></i> 2.1K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="mt-6 w-full py-3 rounded-xl border border-da-border text-da-muted text-sm hover:border-da-green hover:text-da-green transition-all" style="background:#111218;">
+        <i class="fas fa-spinner mr-2"></i> Load More Deviations
+      </button>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="mb-8">
+      <div class="section-header">
+        <span class="section-title">Profile Comments <span class="text-da-muted font-normal text-sm">2,347</span></span>
+      </div>
+
+      <!-- Comment Form -->
+      <div class="sidebar-card" style="background:#111218;">
+        <div class="flex gap-3">
+          <img src="public/images/artist_avatar.jpg" alt="You" class="comment-avatar" />
+          <div class="flex-1">
+            <textarea class="da-textarea" rows="3" placeholder="Join the community to add your comment..."></textarea>
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex gap-2 text-da-muted text-sm">
+                <button class="hover:text-da-green transition-colors tooltip" data-tip="Bold"><i class="fas fa-bold"></i></button>
+                <button class="hover:text-da-green transition-colors tooltip" data-tip="Italic"><i class="fas fa-italic"></i></button>
+                <button class="hover:text-da-green transition-colors tooltip" data-tip="Image"><i class="fas fa-image"></i></button>
+              </div>
+              <button class="da-btn-primary text-xs px-4 py-1.5">Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments List -->
+      <div class="border border-da-border rounded-xl overflow-hidden mt-4" style="border-color:#1a1b26;">
+        <div class="comment-item">
+          <div style="width:36px; height:36px; border-radius:50%; background: linear-gradient(135deg,#00e59b,#0099ff); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.875rem; color:#06070d;">A</div>
+          <div class="comment-body">
+            <div class="flex items-center gap-2">
+              <span class="comment-user">annasworld9999</span>
+              <span class="comment-time">Mar 7, 2025</span>
+            </div>
+            <p class="comment-text">Amazing art!!! Your cityscapes always take my breath away 😍</p>
+            <div class="comment-actions">
+              <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i> 12</button>
+              <button class="comment-action-btn">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div style="width:36px; height:36px; border-radius:50%; background: linear-gradient(135deg,#7c3aed,#db2777); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.875rem; color:#fff;">D</div>
+          <div class="comment-body">
+            <div class="flex items-center gap-2">
+              <span class="comment-user">dojdinka</span>
+              <span class="comment-time">Aug 28, 2024</span>
+            </div>
+            <p class="comment-text">❤️❤️❤️</p>
+            <div class="comment-actions">
+              <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i> 5</button>
+              <button class="comment-action-btn">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div style="width:36px; height:36px; border-radius:50%; background: linear-gradient(135deg,#f59e0b,#ef4444); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.875rem; color:#06070d;">M</div>
+          <div class="comment-body">
+            <div class="flex items-center gap-2">
+              <span class="comment-user">mikazukin_art</span>
+              <span class="comment-time">Jun 15, 2024</span>
+            </div>
+            <p class="comment-text">Your konbini piece is absolutely stunning! The lighting is phenomenal. Have you done any tutorials on environment lighting?</p>
+            <div class="comment-actions">
+              <button class="comment-action-btn"><i class="fas fa-heart mr-1"></i> 8</button>
+              <button class="comment-action-btn">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-center py-3">
+          <button class="text-da-green text-sm hover:underline">Load more comments</button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /left column -->
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="w-72 flex-shrink-0 hidden lg:block">
+
+    <!-- Quick Stats -->
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Statistics</p>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="stat-chip"><span class="val">1.7M</span><span class="lbl">Pageviews</span></div>
+        <div class="stat-chip"><span class="val">467</span><span class="lbl">Artworks</span></div>
+        <div class="stat-chip"><span class="val">67.3K</span><span class="lbl">Watchers</span></div>
+        <div class="stat-chip"><span class="val">193</span><span class="lbl">Watching</span></div>
+        <div class="stat-chip"><span class="val">1.3K</span><span class="lbl">Favourites</span></div>
+        <div class="stat-chip"><span class="val">6.2K</span><span class="lbl">Comments</span></div>
+      </div>
+    </div>
+
+    <!-- About snippet -->
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">About</p>
+      <div class="flex items-center gap-3 mb-3">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover" />
+        <div>
+          <p class="text-sm font-semibold text-white">arsenixc</p>
+          <p class="text-xs text-da-muted">Environment Artist</p>
+        </div>
+      </div>
+      <div class="space-y-2 text-sm text-da-muted">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-calendar-alt w-4 text-center text-xs"></i>
+          <span>Birthday: Apr 27</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-user-clock w-4 text-center text-xs"></i>
+          <span>Deviant for 16 years</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fab fa-twitter w-4 text-center text-xs" style="color:#1d9bf0;"></i>
+          <a href="#" class="text-da-green hover:underline">twitter.com/ArsXC</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-link w-4 text-center text-xs"></i>
+          <a href="#" class="text-da-green hover:underline">hipolink.me/arsenixc</a>
+        </div>
+      </div>
+      <a href="about.html" class="block text-center mt-3 text-sm text-da-green hover:underline">Full Profile →</a>
+    </div>
+
+    <!-- Badges -->
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Badges</p>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="badge-item"><span class="badge-icon">🎨</span><span class="badge-name">Painter's Palette</span><span class="badge-count">×4</span></div>
+        <div class="badge-item"><span class="badge-icon">💎</span><span class="badge-name">Diamond</span><span class="badge-count">×19</span></div>
+        <div class="badge-item"><span class="badge-icon">🌟</span><span class="badge-name">Emerald</span><span class="badge-count">×12</span></div>
+        <div class="badge-item"><span class="badge-icon">💖</span><span class="badge-name">Heart</span><span class="badge-count">×35</span></div>
+        <div class="badge-item"><span class="badge-icon">💰</span><span class="badge-name">Gold Coin</span><span class="badge-count">×27</span></div>
+        <div class="badge-item"><span class="badge-icon">🎉</span><span class="badge-name">Confetti</span><span class="badge-count">×12</span></div>
+      </div>
+    </div>
+
+    <!-- Groups -->
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Groups</p>
+      <div class="flex flex-wrap gap-1.5">
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">3D-Anime</a>
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">Digital-Art-Fantasy</a>
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">Digital-Beauty</a>
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">RedBlackWhite</a>
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">SciFi-Fantasy-Art</a>
+        <a href="#" class="text-xs px-3 py-1 rounded-full border border-da-border text-da-muted hover:border-da-green hover:text-da-green transition-colors" style="border-color:#2a2b3d;">Anime-Manga</a>
+      </div>
+    </div>
+
+    <!-- Watchers -->
+    <div class="sidebar-card">
+      <div class="flex items-center justify-between mb-3">
+        <p class="sidebar-card-title mb-0">Recent Watchers</p>
+        <a href="about.html" class="text-xs text-da-green hover:underline">All →</a>
+      </div>
+      <div class="space-y-1">
+        <div class="watcher-item">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#00e59b,#0099ff);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;color:#06070d;">S</div>
+          <span class="watcher-name">SkyArtist99</span>
+        </div>
+        <div class="watcher-item">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#7c3aed,#db2777);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;color:#fff;">N</div>
+          <span class="watcher-name">NightDrawer</span>
+        </div>
+        <div class="watcher-item">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;color:#06070d;">M</div>
+          <span class="watcher-name">mikazukin</span>
+        </div>
+        <div class="watcher-item">
+          <div class="watcher-avatar" style="background: linear-gradient(135deg,#10b981,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;color:#fff;">D</div>
+          <span class="watcher-name">dmkdtymkdtym</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer style="background:#080910; border-top: 1px solid #1a1b26;" class="mt-8">
+  <div class="max-w-screen-xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:#00e59b;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="font-bold text-white">ArtGallery</span>
+        </div>
+        <p class="text-da-muted text-xs leading-relaxed">A platform for artists to showcase their work and connect with art lovers worldwide.</p>
+        <div class="flex gap-3 mt-4 text-da-muted">
+          <a href="#" class="hover:text-da-green transition-colors"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="hover:text-da-green transition-colors"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="hover:text-da-green transition-colors"><i class="fab fa-discord"></i></a>
+          <a href="#" class="hover:text-da-green transition-colors"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Explore</h4>
+        <ul class="space-y-2 text-sm text-da-muted">
+          <li><a href="#" class="hover:text-white transition-colors">Browse Art</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Daily Deviations</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Shop Prints</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Challenges</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Community</h4>
+        <ul class="space-y-2 text-sm text-da-muted">
+          <li><a href="#" class="hover:text-white transition-colors">Groups</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Forums</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Events</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Account</h4>
+        <ul class="space-y-2 text-sm text-da-muted">
+          <li><a href="#" class="hover:text-white transition-colors">Sign Up</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Log In</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Core Membership</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-da-muted" style="border-color:#1a1b26;">
+      <p>© 2025 ArtGallery. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Watch button toggle
+  function toggleWatch(btn) {
+    const watching = btn.dataset.watching === 'true';
+    if (watching) {
+      btn.dataset.watching = 'false';
+      btn.innerHTML = '<i class="fas fa-eye mr-1"></i> Watch';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    } else {
+      btn.dataset.watching = 'true';
+      btn.innerHTML = '<i class="fas fa-eye mr-1"></i> Watching';
+      btn.style.color = '#00e59b';
+      btn.style.borderColor = '#00e59b';
+    }
+  }
+
+  // Intersection observer for animate-on-scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+
+  // Like button
+  document.querySelectorAll('.comment-action-btn').forEach(btn => {
+    if (btn.innerHTML.includes('fa-heart')) {
+      btn.addEventListener('click', () => {
+        const liked = btn.dataset.liked === 'true';
+        if (liked) {
+          btn.dataset.liked = 'false';
+          btn.style.color = '';
+        } else {
+          btn.dataset.liked = 'true';
+          btn.style.color = '#f43f5e';
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arsenixc Favourites — ArtGallery</title>
+  <meta name="description" content="Browse artworks favourited by arsenixc — curated digital art from anime, fantasy, environment art and more." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #06070d; color: #e8e8f0; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #111218; }
+    ::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e59b; }
+
+    /* Navbar */
+    .da-nav { background: rgba(6,7,13,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1b26; position: sticky; top: 0; z-index: 100; }
+    .da-search { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.45rem 1rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.2s; }
+    .da-search:focus-within { border-color: #00e59b; }
+    .da-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 0.875rem; width: 200px; }
+    .da-search input::placeholder { color: #8b8ca8; }
+    .da-btn-primary { background: #00e59b; color: #06070d; font-weight: 600; border: none; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+    .da-btn-primary:hover { background: #00c984; transform: translateY(-1px); }
+    .da-btn-outline { background: transparent; color: #e8e8f0; font-weight: 500; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: border-color 0.2s, background 0.2s; }
+    .da-btn-outline:hover { border-color: #00e59b; background: rgba(0,229,155,0.08); }
+
+    /* Profile banner */
+    .profile-banner { position: relative; height: 260px; overflow: hidden; }
+    .profile-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #06070d 0%, rgba(6,7,13,0.45) 60%, transparent 100%); }
+    .profile-info-bar { background: #111218; border-bottom: 1px solid #1a1b26; }
+    .avatar-ring { border: 3px solid #00e59b; border-radius: 50%; padding: 2px; }
+    .profile-tab { font-size: 0.875rem; font-weight: 500; color: #8b8ca8; padding: 1rem 1.25rem; border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .profile-tab:hover { color: #e8e8f0; }
+    .profile-tab.active { color: #00e59b; border-bottom-color: #00e59b; }
+    .core-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: #06070d; font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+
+    /* Filter pill */
+    .filter-pill { font-size: 0.8125rem; padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid #2a2b3d; color: #8b8ca8; cursor: pointer; transition: all 0.2s; white-space: nowrap; background: transparent; }
+    .filter-pill:hover { border-color: #00e59b; color: #00e59b; }
+    .filter-pill.active { background: #00e59b; color: #06070d; border-color: #00e59b; font-weight: 600; }
+
+    /* Masonry */
+    .masonry { columns: 4; column-gap: 12px; }
+    .masonry-item { break-inside: avoid; margin-bottom: 12px; }
+    @media (max-width: 1280px) { .masonry { columns: 3; } }
+    @media (max-width: 900px)  { .masonry { columns: 2; } }
+    @media (max-width: 600px)  { .masonry { columns: 1; } }
+
+    /* Art Card */
+    .art-card { background: #111218; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; position: relative; }
+    .art-card:hover { transform: translateY(-5px); box-shadow: 0 14px 44px rgba(0,0,0,0.55); }
+    .art-card:hover .art-overlay { opacity: 1; }
+    .art-card:hover .fav-remove-btn { opacity: 1; }
+    .art-card img { width: 100%; display: block; }
+    .art-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,7,13,0.92) 0%, rgba(6,7,13,0.15) 55%, transparent 100%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 0.875rem; }
+    .art-card-meta { padding: 0.625rem 0.75rem 0.75rem; }
+    .stat-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; color: #8b8ca8; }
+
+    /* Remove from fav btn */
+    .fav-remove-btn { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(6,7,13,0.75); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #f43f5e; opacity: 0; transition: opacity 0.25s, transform 0.15s; backdrop-filter: blur(4px); }
+    .fav-remove-btn:hover { transform: scale(1.15); }
+
+    /* Artist tag chip on card */
+    .artist-chip { display: inline-flex; align-items: center; gap: 5px; }
+    .artist-chip img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; }
+    .artist-chip span { font-size: 0.7rem; color: #00e59b; }
+
+    /* Collection card */
+    .collection-card { background: #111218; border: 1px solid #1a1b26; border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+    .collection-card:hover { border-color: rgba(0,229,155,0.35); transform: translateY(-3px); }
+    .collection-preview { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 140px; gap: 2px; }
+    .collection-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .collection-info { padding: 0.75rem; }
+    .collection-name { font-size: 0.875rem; font-weight: 600; color: #e8e8f0; }
+    .collection-count { font-size: 0.72rem; color: #8b8ca8; margin-top: 2px; }
+
+    /* Sort dropdown */
+    select.da-select { background: #1a1b26; border: 1px solid #2a2b3d; color: #8b8ca8; border-radius: 8px; padding: 0.4rem 0.875rem; font-size: 0.8125rem; outline: none; cursor: pointer; transition: border-color 0.2s; font-family: 'Inter', sans-serif; }
+    select.da-select:focus { border-color: #00e59b; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 4rem 2rem; }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .empty-title { font-size: 1.125rem; font-weight: 600; color: #e8e8f0; margin-bottom: 0.5rem; }
+    .empty-desc { font-size: 0.875rem; color: #8b8ca8; }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(6,7,13,0.96); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+    .lightbox.open { display: flex; }
+    .lightbox-wrap { max-width: 90vw; max-height: 92vh; position: relative; display: flex; flex-direction: column; }
+    .lightbox-wrap img { max-height: 75vh; object-fit: contain; border-radius: 8px 8px 0 0; display: block; }
+    .lightbox-bar { background: #111218; border-radius: 0 0 8px 8px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .lb-close { position: absolute; top: -44px; right: 0; background: none; border: none; color: #8b8ca8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+    .lb-close:hover { color: #e8e8f0; }
+    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(17,18,24,0.8); border: none; border-radius: 50%; width: 40px; height: 40px; color: #e8e8f0; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.2s; }
+    .lb-nav:hover { background: rgba(0,229,155,0.2); }
+    .lb-prev { left: -56px; }
+    .lb-next { right: -56px; }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+
+<!-- =================== NAVBAR =================== -->
+<nav class="da-nav">
+  <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-4 h-14">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#00e59b;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="font-bold text-white text-lg hidden sm:block">ArtGallery</span>
+    </a>
+    <div class="da-search flex-1 max-w-xs hidden md:flex">
+      <i class="fas fa-search" style="color:#8b8ca8; font-size:0.8rem;"></i>
+      <input type="text" placeholder="Search art, artists..." />
+    </div>
+    <div class="flex-1"></div>
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="demo-author.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Explore</a>
+      <a href="gallery.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Gallery</a>
+      <a href="about.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">About</a>
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button class="da-btn-outline hidden sm:block"><i class="fas fa-eye mr-1"></i> Watch</button>
+      <button class="da-btn-primary">+ Submit</button>
+      <div class="w-8 h-8 rounded-full overflow-hidden cursor-pointer border border-gray-700 hover:border-green-400 transition-colors">
+        <img src="public/images/artist_avatar.jpg" alt="User" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- =================== BANNER =================== -->
+<div class="profile-banner">
+  <img src="public/images/artwork_fav1.jpg" alt="Favourites Banner" style="object-position: center 30%;" />
+</div>
+
+<!-- =================== PROFILE INFO BAR =================== -->
+<div class="profile-info-bar">
+  <div class="max-w-screen-xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 py-4 -mt-12 relative z-10">
+      <div class="avatar-ring flex-shrink-0">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-20 h-20 rounded-full object-cover block" />
+      </div>
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-1">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-xl font-bold text-white">arsenixc</h1>
+            <span class="core-badge">CORE</span>
+          </div>
+          <div class="flex flex-wrap gap-4 mt-1 text-sm">
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">1,347</span> Favourites</span>
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">24</span> Collections</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="da-btn-outline"><i class="fas fa-eye mr-1"></i> Watch</button>
+          <button class="da-btn-primary"><i class="fas fa-share-alt mr-1"></i> Share</button>
+        </div>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="flex overflow-x-auto border-b" style="border-color:#1a1b26;">
+      <a href="demo-author.html" class="profile-tab">Home</a>
+      <a href="gallery.html"    class="profile-tab">Gallery</a>
+      <a href="favourites.html" class="profile-tab active">Favourites</a>
+      <a href="posts.html"      class="profile-tab">Posts</a>
+      <a href="about.html"      class="profile-tab">About</a>
+    </div>
+  </div>
+</div>
+
+<!-- =================== MAIN CONTENT =================== -->
+<main class="max-w-screen-xl mx-auto px-4 py-6">
+
+  <!-- ---- COLLECTIONS ROW ---- -->
+  <section class="mb-10">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold">
+        <i class="fas fa-folder-open mr-2" style="color:#00e59b;"></i>Collections
+        <span class="text-sm font-normal ml-1" style="color:#8b8ca8;">24</span>
+      </h2>
+      <button class="text-sm flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-dashed transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b'; this.style.color='#00e59b';" onmouseout="this.style.borderColor='#2a2b3d'; this.style.color='#8b8ca8';">
+        <i class="fas fa-plus text-xs"></i> New Collection
+      </button>
+    </div>
+    <div class="flex gap-3 overflow-x-auto pb-2" style="scroll-snap-type: x mandatory;">
+      <!-- Collection cards -->
+      <div class="collection-card flex-shrink-0 fade-in" style="width:180px; animation-delay:0.05s; scroll-snap-align:start;">
+        <div class="collection-preview">
+          <img src="public/images/artwork_city1.jpg" alt="" />
+          <img src="public/images/artwork_city2.jpg" alt="" />
+          <img src="public/images/banner_hero.jpg" alt="" />
+          <img src="public/images/artwork_interior1.jpg" alt="" />
+        </div>
+        <div class="collection-info">
+          <div class="collection-name">🏙 City Scenes</div>
+          <div class="collection-count">48 items · Public</div>
+        </div>
+      </div>
+      <div class="collection-card flex-shrink-0 fade-in" style="width:180px; animation-delay:0.1s; scroll-snap-align:start;">
+        <div class="collection-preview">
+          <img src="public/images/artwork_char1.jpg" alt="" />
+          <img src="public/images/artwork_char2.jpg" alt="" />
+          <img src="public/images/artwork_fav2.jpg" alt="" />
+          <img src="public/images/artwork_fav1.jpg" alt="" />
+        </div>
+        <div class="collection-info">
+          <div class="collection-name">🧝 Characters</div>
+          <div class="collection-count">112 items · Public</div>
+        </div>
+      </div>
+      <div class="collection-card flex-shrink-0 fade-in" style="width:180px; animation-delay:0.15s; scroll-snap-align:start;">
+        <div class="collection-preview">
+          <img src="public/images/artwork_fav3.jpg" alt="" />
+          <img src="public/images/artwork_nature1.jpg" alt="" />
+          <img src="public/images/artwork_fav4.jpg" alt="" />
+          <img src="public/images/artwork_fav3.jpg" alt="" style="filter:hue-rotate(60deg);" />
+        </div>
+        <div class="collection-info">
+          <div class="collection-name">🌿 Fantasy Nature</div>
+          <div class="collection-count">67 items · Public</div>
+        </div>
+      </div>
+      <div class="collection-card flex-shrink-0 fade-in" style="width:180px; animation-delay:0.2s; scroll-snap-align:start;">
+        <div class="collection-preview">
+          <img src="public/images/artwork_fav4.jpg" alt="" />
+          <img src="public/images/artwork_city1.jpg" alt="" style="filter:hue-rotate(120deg);" />
+          <img src="public/images/artwork_char2.jpg" alt="" />
+          <img src="public/images/artwork_fav2.jpg" alt="" style="filter:hue-rotate(60deg);" />
+        </div>
+        <div class="collection-info">
+          <div class="collection-name">⚔️ Epic & Battle</div>
+          <div class="collection-count">33 items · Private</div>
+        </div>
+      </div>
+      <div class="collection-card flex-shrink-0 fade-in" style="width:180px; animation-delay:0.25s; scroll-snap-align:start;">
+        <div class="collection-preview">
+          <img src="public/images/artwork_interior1.jpg" alt="" />
+          <img src="public/images/artwork_nature1.jpg" alt="" style="filter:saturate(0.6);" />
+          <img src="public/images/artwork_city2.jpg" alt="" />
+          <img src="public/images/banner_hero.jpg" alt="" style="filter:brightness(0.6);" />
+        </div>
+        <div class="collection-info">
+          <div class="collection-name">☕ Cozy Vibes</div>
+          <div class="collection-count">29 items · Public</div>
+        </div>
+      </div>
+      <!-- +more placeholder -->
+      <div class="flex-shrink-0 w-44 flex items-center justify-center rounded-xl border-2 border-dashed" style="border-color:#2a2b3d; cursor:pointer; min-height:180px;" onmouseover="this.style.borderColor='#00e59b';" onmouseout="this.style.borderColor='#2a2b3d';">
+        <div class="text-center" style="color:#8b8ca8;">
+          <div class="text-2xl mb-1">+19</div>
+          <div class="text-xs">More Collections</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- FILTER & SORT BAR ---- -->
+  <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+    <!-- Category pills -->
+    <div class="flex gap-2 overflow-x-auto pb-1 flex-1">
+      <button class="filter-pill active" onclick="setFilter(this)">All (1,347)</button>
+      <button class="filter-pill" onclick="setFilter(this)">🏙 City Scenes</button>
+      <button class="filter-pill" onclick="setFilter(this)">🧝 Characters</button>
+      <button class="filter-pill" onclick="setFilter(this)">🌸 Nature</button>
+      <button class="filter-pill" onclick="setFilter(this)">⚔️ Fantasy</button>
+      <button class="filter-pill" onclick="setFilter(this)">🤖 Sci-Fi</button>
+      <button class="filter-pill" onclick="setFilter(this)">☕ Cozy</button>
+    </div>
+    <!-- Sort + View -->
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <select class="da-select">
+        <option>Newest First</option>
+        <option>Oldest First</option>
+        <option>Most Viewed</option>
+        <option>Most Liked</option>
+      </select>
+      <!-- View toggle -->
+      <div class="flex items-center gap-1 border rounded-lg px-1 py-1" style="border-color:#2a2b3d;">
+        <button id="vm" class="w-7 h-7 rounded flex items-center justify-center" style="background:#00e59b; color:#06070d;" onclick="setView('m')"><i class="fas fa-th text-xs"></i></button>
+        <button id="vg" class="w-7 h-7 rounded flex items-center justify-center" style="color:#8b8ca8;" onclick="setView('g')"><i class="fas fa-th-large text-xs"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---- MASONRY GALLERY ---- -->
+  <div class="masonry" id="fav-grid">
+
+    <div class="masonry-item fade-in" style="animation-delay:0.05s;">
+      <div class="art-card" onclick="openLb(0)">
+        <img src="public/images/artwork_fav1.jpg" alt="Magical Transformation" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>StarMagician</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Magical Transformation</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 84.2K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 6.1K</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Magical Transformation</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">StarMagician</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 84.2K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 6.1K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.1s;">
+      <div class="art-card" onclick="openLb(1)">
+        <img src="public/images/artwork_fav2.jpg" alt="Crimson Horizon" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>BushidoBrush</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Crimson Horizon</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 47.3K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 3.4K</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Crimson Horizon</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">BushidoBrush</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 47.3K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 3.4K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.15s;">
+      <div class="art-card" onclick="openLb(2)">
+        <img src="public/images/artwork_city1.jpg" alt="Future City" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>arsenixc</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Future City</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 26.7K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 945</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Future City</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 26.7K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 945</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.2s;">
+      <div class="art-card" onclick="openLb(3)">
+        <img src="public/images/artwork_fav3.jpg" alt="Ocean Dream" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>OceanDreamer</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Ocean Dream</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 112K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 9.8K</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Ocean Dream</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">OceanDreamer</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 112K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 9.8K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.25s;">
+      <div class="art-card" onclick="openLb(4)">
+        <img src="public/images/artwork_char2.jpg" alt="2B Stubbys" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>arsenixc</span>
+          </div>
+          <p class="font-semibold text-sm text-white">2B & Small Stubbys</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 14.9K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 892</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">2B & Small Stubbys</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 14.9K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 892</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.3s;">
+      <div class="art-card" onclick="openLb(5)">
+        <img src="public/images/artwork_fav4.jpg" alt="Dragon's Keep" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>DragonMist</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Dragon's Keep</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 73.1K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 5.2K</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Dragon's Keep</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">DragonMist</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 73.1K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 5.2K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.35s;">
+      <div class="art-card" onclick="openLb(6)">
+        <img src="public/images/artwork_nature1.jpg" alt="Sakura Dawn" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>arsenixc</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Sakura Dawn</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 18.1K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 762</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Sakura Dawn</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 18.1K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 762</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.4s;">
+      <div class="art-card" onclick="openLb(7)">
+        <img src="public/images/artwork_char1.jpg" alt="Wink Witch WRB" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>arsenixc</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Wink Witch WRB</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 23.7K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 1.2K</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Wink Witch WRB</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 23.7K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 1.2K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="masonry-item fade-in" style="animation-delay:0.45s;">
+      <div class="art-card" onclick="openLb(8)">
+        <img src="public/images/artwork_interior1.jpg" alt="Mokuren Café" />
+        <button class="fav-remove-btn" title="Remove from Favourites" onclick="removeFav(event,this)"><i class="fas fa-heart-broken text-xs"></i></button>
+        <div class="art-overlay">
+          <div class="artist-chip mb-1">
+            <img src="public/images/artist_avatar.jpg" alt="" />
+            <span>arsenixc</span>
+          </div>
+          <p class="font-semibold text-sm text-white">Mokuren Café</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge text-gray-300"><i class="fas fa-eye"></i> 19.5K</span>
+            <span class="stat-badge text-gray-300"><i class="fas fa-heart"></i> 834</span>
+          </div>
+        </div>
+        <div class="art-card-meta">
+          <p class="text-sm font-semibold text-white truncate">Mokuren Café</p>
+          <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span style="color:#00e59b;">arsenixc</span></p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 19.5K</span>
+            <span class="stat-badge"><i class="fas fa-heart"></i> 834</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Load more -->
+  <div class="text-center mt-8">
+    <button id="fav-load-more" class="da-btn-outline px-10 py-3" onclick="loadMoreFavs(this)">
+      <i class="fas fa-redo mr-2"></i> Load More (1,338 remaining)
+    </button>
+  </div>
+
+</main>
+
+<!-- =================== LIGHTBOX =================== -->
+<div id="lightbox" class="lightbox" onclick="closeLb(event)">
+  <div class="lightbox-wrap">
+    <button class="lb-close" onclick="document.getElementById('lightbox').classList.remove('open')"><i class="fas fa-times"></i></button>
+    <button class="lb-nav lb-prev" onclick="stepLb(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="lb-nav lb-next" onclick="stepLb(1)"><i class="fas fa-chevron-right"></i></button>
+    <img id="lb-img" src="" alt="" />
+    <div class="lightbox-bar">
+      <div>
+        <p id="lb-title" class="font-semibold text-white text-sm"></p>
+        <p class="text-xs mt-0.5" style="color:#8b8ca8;">by <span id="lb-artist" style="color:#00e59b;"></span></p>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="stat-badge text-sm"><i class="fas fa-eye"></i> <span id="lb-views"></span></span>
+        <button id="lb-fav-btn" onclick="toggleLbFav(this)" class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-colors" style="border-color:#f43f5e; color:#f43f5e; background:rgba(244,63,94,0.1);">
+          <i class="fas fa-heart"></i> Unfavourite
+        </button>
+        <a id="lb-link" href="gallery.html" class="text-sm flex items-center gap-1" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">
+          <i class="fas fa-external-link-alt text-xs"></i> View Full
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FOOTER =================== -->
+<footer style="background:#080910; border-top:1px solid #1a1b26;" class="mt-12">
+  <div class="max-w-screen-xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style="color:#8b8ca8;">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded flex items-center justify-center" style="background:#00e59b;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="text-white font-semibold">ArtGallery</span>
+      <span>© 2025 All rights reserved.</span>
+    </div>
+    <div class="flex gap-4">
+      <a href="#" class="hover:text-white transition-colors">Privacy</a>
+      <a href="#" class="hover:text-white transition-colors">Terms</a>
+      <a href="#" class="hover:text-white transition-colors">Help</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Lightbox data
+  const items = [
+    { src:'public/images/artwork_fav1.jpg',  title:'Magical Transformation', artist:'StarMagician',  views:'84.2K' },
+    { src:'public/images/artwork_fav2.jpg',  title:'Crimson Horizon',        artist:'BushidoBrush',  views:'47.3K' },
+    { src:'public/images/artwork_city1.jpg', title:'Future City',            artist:'arsenixc',      views:'26.7K' },
+    { src:'public/images/artwork_fav3.jpg',  title:'Ocean Dream',            artist:'OceanDreamer',  views:'112K'  },
+    { src:'public/images/artwork_char2.jpg', title:'2B & Small Stubbys',     artist:'arsenixc',      views:'14.9K' },
+    { src:'public/images/artwork_fav4.jpg',  title:"Dragon's Keep",          artist:'DragonMist',    views:'73.1K' },
+    { src:'public/images/artwork_nature1.jpg',title:'Sakura Dawn',           artist:'arsenixc',      views:'18.1K' },
+    { src:'public/images/artwork_char1.jpg', title:'Wink Witch WRB',         artist:'arsenixc',      views:'23.7K' },
+    { src:'public/images/artwork_interior1.jpg',title:'Mokuren Café',        artist:'arsenixc',      views:'19.5K' },
+  ];
+  let lbIdx = 0;
+
+  function openLb(i) {
+    lbIdx = i; renderLb();
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function renderLb() {
+    const d = items[lbIdx];
+    document.getElementById('lb-img').src = d.src;
+    document.getElementById('lb-title').textContent = d.title;
+    document.getElementById('lb-artist').textContent = d.artist;
+    document.getElementById('lb-views').textContent = d.views;
+  }
+  function stepLb(dir) {
+    lbIdx = (lbIdx + dir + items.length) % items.length;
+    renderLb();
+  }
+  function closeLb(e) {
+    if (e.target === document.getElementById('lightbox')) document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')      document.getElementById('lightbox').classList.remove('open');
+    if (e.key === 'ArrowRight')  stepLb(1);
+    if (e.key === 'ArrowLeft')   stepLb(-1);
+  });
+  function toggleLbFav(btn) {
+    const faved = btn.dataset.faved === 'true';
+    btn.dataset.faved = faved ? 'false' : 'true';
+    btn.innerHTML = faved ? '<i class="fas fa-heart"></i> Unfavourite' : '<i class="fas fa-heart"></i> Favourited ✓';
+    btn.style.color = faved ? '#f43f5e' : '#00e59b';
+    btn.style.borderColor = faved ? '#f43f5e' : '#00e59b';
+    btn.style.background = faved ? 'rgba(244,63,94,0.1)' : 'rgba(0,229,155,0.1)';
+  }
+
+  // Remove from fav with animation
+  function removeFav(e, btn) {
+    e.stopPropagation();
+    const card = btn.closest('.masonry-item');
+    card.style.transition = 'opacity 0.3s, transform 0.3s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.92)';
+    setTimeout(() => card.remove(), 300);
+  }
+
+  // Filter pills
+  function setFilter(el) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // View toggle
+  function setView(mode) {
+    const grid = document.getElementById('fav-grid');
+    const vm = document.getElementById('vm'), vg = document.getElementById('vg');
+    if (mode === 'm') {
+      grid.className = 'masonry';
+      vm.style.background = '#00e59b'; vm.style.color = '#06070d';
+      vg.style.background = 'transparent'; vg.style.color = '#8b8ca8';
+    } else {
+      grid.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3';
+      vg.style.background = '#00e59b'; vg.style.color = '#06070d';
+      vm.style.background = 'transparent'; vm.style.color = '#8b8ca8';
+    }
+  }
+
+  // Load more favs
+  function loadMoreFavs(btn) {
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-redo mr-2"></i> Load More (1,338 remaining)';
+      btn.disabled = false;
+    }, 1400);
+  }
+
+  // Scroll fade-in
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.style.animationPlayState = 'running'; }), { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => { el.style.animationPlayState = 'paused'; obs.observe(el); });
+</script>
+</body>
+</html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arsenixc Posts — ArtGallery</title>
+  <meta name="description" content="Journal posts, process updates, and announcements from arsenixc — environment artist and digital painter." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #06070d; color: #e8e8f0; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #111218; }
+    ::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e59b; }
+
+    /* Navbar */
+    .da-nav { background: rgba(6,7,13,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1b26; position: sticky; top: 0; z-index: 100; }
+    .da-search { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.45rem 1rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.2s; }
+    .da-search:focus-within { border-color: #00e59b; }
+    .da-search input { background: transparent; border: none; outline: none; color: #e8e8f0; font-size: 0.875rem; width: 200px; }
+    .da-search input::placeholder { color: #8b8ca8; }
+    .da-btn-primary { background: #00e59b; color: #06070d; font-weight: 600; border: none; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: background 0.2s, transform 0.15s; }
+    .da-btn-primary:hover { background: #00c984; transform: translateY(-1px); }
+    .da-btn-outline { background: transparent; color: #e8e8f0; font-weight: 500; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.875rem; transition: border-color 0.2s, background 0.2s; }
+    .da-btn-outline:hover { border-color: #00e59b; background: rgba(0,229,155,0.08); }
+
+    /* Profile bar */
+    .profile-banner { position: relative; height: 240px; overflow: hidden; }
+    .profile-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #06070d 0%, rgba(6,7,13,0.5) 60%, transparent 100%); }
+    .profile-info-bar { background: #111218; border-bottom: 1px solid #1a1b26; }
+    .avatar-ring { border: 3px solid #00e59b; border-radius: 50%; padding: 2px; }
+    .profile-tab { font-size: 0.875rem; font-weight: 500; color: #8b8ca8; padding: 1rem 1.25rem; border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .profile-tab:hover { color: #e8e8f0; }
+    .profile-tab.active { color: #00e59b; border-bottom-color: #00e59b; }
+    .core-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: #06070d; font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+
+    /* Post card */
+    .post-card { background: #111218; border: 1px solid #1a1b26; border-radius: 12px; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s; }
+    .post-card:hover { border-color: rgba(0,229,155,0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+
+    /* Post type tag */
+    .post-type { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.6rem; border-radius: 4px; }
+    .post-type.journal { background: rgba(99,102,241,0.18); color: #818cf8; }
+    .post-type.status  { background: rgba(0,229,155,0.14); color: #00e59b; }
+    .post-type.poll    { background: rgba(245,158,11,0.18); color: #fbbf24; }
+    .post-type.wip     { background: rgba(236,72,153,0.18); color: #f472b6; }
+    .post-type.tutorial{ background: rgba(14,165,233,0.18); color: #38bdf8; }
+
+    /* Content text */
+    .post-content { font-size: 0.9375rem; line-height: 1.7; color: #c8c8d8; }
+    .post-content a { color: #00e59b; text-decoration: none; }
+    .post-content a:hover { text-decoration: underline; }
+    .post-content strong { color: #e8e8f0; }
+    .post-content blockquote { border-left: 3px solid #00e59b; padding-left: 1rem; margin: 0.75rem 0; color: #8b8ca8; font-style: italic; }
+
+    /* Poll */
+    .poll-option { background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 8px; padding: 0.625rem 1rem; cursor: pointer; transition: border-color 0.2s; position: relative; overflow: hidden; }
+    .poll-option:hover { border-color: #00e59b; }
+    .poll-option.voted { border-color: #00e59b; }
+    .poll-bar { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(0,229,155,0.12); transition: width 0.6s ease; border-radius: 8px; }
+    .poll-label { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; }
+    .poll-pct { font-size: 0.75rem; font-weight: 600; color: #00e59b; }
+
+    /* Comment bar */
+    .comment-bar { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1.25rem; border-top: 1px solid #1a1b26; }
+    .comment-bar input { flex: 1; background: #1a1b26; border: 1px solid #2a2b3d; border-radius: 20px; padding: 0.4rem 1rem; color: #e8e8f0; font-size: 0.875rem; outline: none; transition: border-color 0.2s; font-family: 'Inter', sans-serif; }
+    .comment-bar input:focus { border-color: #00e59b; }
+    .comment-bar input::placeholder { color: #8b8ca8; }
+
+    /* React button */
+    .react-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8125rem; color: #8b8ca8; background: none; border: none; cursor: pointer; padding: 0.35rem 0.75rem; border-radius: 20px; transition: background 0.2s, color 0.2s; }
+    .react-btn:hover { background: #1a1b26; }
+    .react-btn.liked { color: #f43f5e; }
+    .react-btn.liked:hover { background: rgba(244,63,94,0.1); }
+
+    /* Emoji picker */
+    .emoji-row { display: flex; gap: 4px; flex-wrap: wrap; }
+    .emoji-btn { font-size: 1.25rem; cursor: pointer; padding: 4px; border-radius: 6px; transition: background 0.15s, transform 0.15s; border: none; background: none; }
+    .emoji-btn:hover { background: #1a1b26; transform: scale(1.25); }
+
+    /* Pinned badge */
+    .pinned-badge { position: absolute; top: 12px; right: 12px; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #f59e0b; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
+
+    /* WIP image strip */
+    .wip-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; }
+    .wip-strip img { height: 120px; border-radius: 6px; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s; object-fit: cover; }
+    .wip-strip img:hover { opacity: 0.85; }
+
+    /* Comment thread */
+    .post-comment { display: flex; gap: 0.625rem; padding: 0.75rem 1.25rem; border-top: 1px solid #1a1b26; }
+    .pc-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
+    .pc-body { flex: 1; }
+    .pc-meta { display: flex; align-items: center; gap: 0.5rem; }
+    .pc-user { font-size: 0.8125rem; font-weight: 600; color: #e8e8f0; }
+    .pc-time { font-size: 0.7rem; color: #8b8ca8; }
+    .pc-text { font-size: 0.8125rem; color: #c8c8d8; margin-top: 0.2rem; line-height: 1.5; }
+    .pc-like { font-size: 0.72rem; color: #8b8ca8; background: none; border: none; cursor: pointer; padding: 0; margin-top: 0.25rem; transition: color 0.2s; }
+    .pc-like:hover { color: #f43f5e; }
+
+    /* Sidebar */
+    .sidebar-card { background: #111218; border: 1px solid #1a1b26; border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+    .sidebar-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8b8ca8; margin-bottom: 1rem; }
+
+    /* Filter pill */
+    .filter-pill { font-size: 0.8125rem; padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid #2a2b3d; color: #8b8ca8; cursor: pointer; transition: all 0.2s; white-space: nowrap; background: transparent; }
+    .filter-pill:hover { border-color: #00e59b; color: #00e59b; }
+    .filter-pill.active { background: #00e59b; color: #06070d; border-color: #00e59b; font-weight: 600; }
+
+    /* Stat badge */
+    .stat-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; color: #8b8ca8; }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+
+<!-- =================== NAVBAR =================== -->
+<nav class="da-nav">
+  <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-4 h-14">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#00e59b;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="font-bold text-white text-lg hidden sm:block">ArtGallery</span>
+    </a>
+    <div class="da-search flex-1 max-w-xs hidden md:flex">
+      <i class="fas fa-search" style="color:#8b8ca8; font-size:0.8rem;"></i>
+      <input type="text" placeholder="Search posts..." />
+    </div>
+    <div class="flex-1"></div>
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="demo-author.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Explore</a>
+      <a href="gallery.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">Gallery</a>
+      <a href="about.html" class="text-sm px-3 py-1.5 rounded-md" style="color:#8b8ca8;" onmouseover="this.style.color='#e8e8f0'" onmouseout="this.style.color='#8b8ca8'">About</a>
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button class="da-btn-outline hidden sm:block"><i class="fas fa-eye mr-1"></i> Watch</button>
+      <button class="da-btn-primary">+ Submit</button>
+      <div class="w-8 h-8 rounded-full overflow-hidden cursor-pointer border border-gray-700 hover:border-green-400 transition-colors">
+        <img src="public/images/artist_avatar.jpg" alt="User" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- =================== BANNER =================== -->
+<div class="profile-banner">
+  <img src="public/images/post_img1.jpg" alt="Posts Banner" />
+</div>
+
+<!-- =================== PROFILE INFO BAR =================== -->
+<div class="profile-info-bar">
+  <div class="max-w-screen-xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 py-4 -mt-12 relative z-10">
+      <div class="avatar-ring flex-shrink-0">
+        <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-20 h-20 rounded-full object-cover block" />
+      </div>
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-1">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-xl font-bold text-white">arsenixc</h1>
+            <span class="core-badge">CORE</span>
+          </div>
+          <div class="flex flex-wrap gap-4 mt-1 text-sm">
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">47</span> Posts</span>
+            <span style="color:#8b8ca8;"><span class="text-white font-semibold">67.3K</span> Watchers</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="da-btn-outline"><i class="fas fa-eye mr-1"></i> Watch</button>
+          <button class="da-btn-primary"><i class="fas fa-share-alt mr-1"></i> Share</button>
+        </div>
+      </div>
+    </div>
+    <div class="flex overflow-x-auto border-b" style="border-color:#1a1b26;">
+      <a href="demo-author.html" class="profile-tab">Home</a>
+      <a href="gallery.html"    class="profile-tab">Gallery</a>
+      <a href="favourites.html" class="profile-tab">Favourites</a>
+      <a href="posts.html"      class="profile-tab active">Posts</a>
+      <a href="about.html"      class="profile-tab">About</a>
+    </div>
+  </div>
+</div>
+
+<!-- =================== MAIN CONTENT =================== -->
+<main class="max-w-screen-xl mx-auto px-4 py-6 flex gap-6">
+
+  <!-- LEFT: Posts Feed -->
+  <div class="flex-1 min-w-0 space-y-5">
+
+    <!-- Filter bar -->
+    <div class="flex flex-wrap gap-2 mb-2">
+      <button class="filter-pill active" onclick="setFilter(this)">All Posts</button>
+      <button class="filter-pill" onclick="setFilter(this)"><i class="fas fa-book mr-1"></i>Journal</button>
+      <button class="filter-pill" onclick="setFilter(this)"><i class="fas fa-comment-alt mr-1"></i>Status</button>
+      <button class="filter-pill" onclick="setFilter(this)"><i class="fas fa-poll mr-1"></i>Polls</button>
+      <button class="filter-pill" onclick="setFilter(this)"><i class="fas fa-paint-brush mr-1"></i>WIP</button>
+      <button class="filter-pill" onclick="setFilter(this)"><i class="fas fa-graduation-cap mr-1"></i>Tutorial</button>
+    </div>
+
+    <!-- ===== POST 1: PINNED JOURNAL ===== -->
+    <article class="post-card fade-in relative" style="animation-delay:0.05s;">
+      <div class="pinned-badge"><i class="fas fa-thumbtack"></i> Pinned</div>
+      <div class="p-5">
+        <!-- Header -->
+        <div class="flex items-start gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-semibold text-white">arsenixc</span>
+              <span class="core-badge">CORE</span>
+              <span class="post-type journal"><i class="fas fa-book"></i> Journal</span>
+            </div>
+            <p class="text-xs mt-0.5" style="color:#8b8ca8;">Sep 12, 2025 · <span>3 min read</span></p>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-xl font-bold text-white mb-3" style="line-height:1.3;">
+          Important Notice — Commercial Use of My Works
+        </h2>
+
+        <!-- Content -->
+        <div class="post-content">
+          <p>Hey everyone,</p>
+          <br/>
+          <p>I've been getting many messages lately about using my artwork in various projects, so I want to make things crystal clear:</p>
+          <br/>
+          <blockquote>DO NOT USE MY WORKS ON YOUTUBE COVERS, GAME MODS, OR OTHER COMMERCIAL PROJECTS without explicit written permission.</blockquote>
+          <br/>
+          <p>Most of my artwork in the gallery — especially the <strong>environment/background pieces</strong> — were created as part of paid commercial projects. Those companies hold the commercial rights to those specific images. This means I <strong>cannot</strong> re-license them to you, even if you ask nicely.</p>
+          <br/>
+          <p>For <strong>commission inquiries</strong>, please reach out via: <a href="#">hipolink.me/arsenixc</a></p>
+          <br/>
+          <p>Thank you for understanding and for the continued support 🙏</p>
+          <p class="mt-3" style="color:#8b8ca8;">— arsenixc</p>
+        </div>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-1.5 mt-4">
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#announcement</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#copyright</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#important</span>
+        </div>
+
+        <!-- Emoji reactions -->
+        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t" style="border-color:#1a1b26;">
+          <button class="react-btn liked" onclick="toggleReact(this,'❤️',128)"><span>❤️</span> <span>128</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'👍',94)"><span>👍</span> <span>94</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'😮',42)"><span>😮</span> <span>42</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🙏',67)"><span>🙏</span> <span>67</span></button>
+          <button class="react-btn" onclick="showEmojiPicker(this)"><i class="fas fa-smile text-xs"></i> React</button>
+          <span class="ml-auto flex items-center gap-3">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 4.2K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 87</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Comments preview -->
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#00e59b,#0ea5e9); color:#06070d;">A</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">annasworld9999</span><span class="pc-time">Sep 12, 2025</span></div>
+          <p class="pc-text">Thank you for making this so clear! Your art deserves proper protection 💪</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>12</button>
+        </div>
+      </div>
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#7c3aed,#db2777); color:#fff;">M</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">mikazukin_art</span><span class="pc-time">Sep 13, 2025</span></div>
+          <p class="pc-text">Completely understandable. All the best with your projects!</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>8</button>
+        </div>
+      </div>
+
+      <div class="comment-bar">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <input type="text" placeholder="Write a comment..." />
+        <button class="text-sm px-3 py-1.5 rounded-full" style="background:#00e59b; color:#06070d; border:none; cursor:pointer; font-weight:600;" onclick="addComment(this)">Post</button>
+      </div>
+    </article>
+
+    <!-- ===== POST 2: WIP UPDATE ===== -->
+    <article class="post-card fade-in" style="animation-delay:0.12s;">
+      <div class="p-5">
+        <div class="flex items-start gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-semibold text-white">arsenixc</span>
+              <span class="post-type wip"><i class="fas fa-paint-brush"></i> Work in Progress</span>
+            </div>
+            <p class="text-xs mt-0.5" style="color:#8b8ca8;">Aug 29, 2025</p>
+          </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-white mb-2">New Konbini Project — Behind the Scenes 🏪</h2>
+
+        <div class="post-content mb-4">
+          <p>Sharing some WIP shots of the latest Konbini interior piece before the final render drop. The lighting took about 3 days to get right — I must have done 50+ test renders 😅</p>
+          <br/>
+          <p>Working in <strong>3ds Max + V-Ray</strong> with hand-painted textures in Photoshop. The final piece will be part of a commercial project (so non-redistributable), but I wanted to share the process!</p>
+        </div>
+
+        <!-- WIP Image Strip -->
+        <div class="wip-strip mb-4">
+          <img src="public/images/post_img1.jpg"        alt="WIP Step 1" style="width:220px;" />
+          <img src="public/images/banner_hero.jpg"      alt="WIP Step 2" style="width:220px; filter:brightness(0.6) saturate(0.3);" />
+          <img src="public/images/artwork_interior1.jpg" alt="WIP Step 3" style="width:220px; filter:saturate(0.5);" />
+          <img src="public/images/banner_hero.jpg"      alt="Final" style="width:220px;" />
+        </div>
+        <p class="text-xs mb-3" style="color:#8b8ca8;"><i class="fas fa-images mr-1"></i> Scroll to see process steps →</p>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#wip</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#3dsmax</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#konbini</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#environmentart</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-4 border-t" style="border-color:#1a1b26;">
+          <button class="react-btn" onclick="toggleReact(this,'🔥',214)"><span>🔥</span> <span>214</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'❤️',185)"><span>❤️</span> <span>185</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'😮',93)"><span>😮</span> <span>93</span></button>
+          <button class="react-btn" onclick="showEmojiPicker(this)"><i class="fas fa-smile text-xs"></i> React</button>
+          <span class="ml-auto flex items-center gap-3">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 11.3K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 143</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444); color:#06070d;">K</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">KoroMochi</span><span class="pc-time">Aug 29, 2025</span></div>
+          <p class="pc-text">THE LIGHTING OMG 🤯 How do you get those neon reflections to look so realistic?!</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>24</button>
+        </div>
+      </div>
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#10b981,#3b82f6); color:#fff;">L</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">LunaPixel</span><span class="pc-time">Aug 30, 2025</span></div>
+          <p class="pc-text">Love seeing the process! The base sketch to final is just incredible.</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>11</button>
+        </div>
+      </div>
+
+      <div class="comment-bar">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <input type="text" placeholder="Write a comment..." />
+        <button class="text-sm px-3 py-1.5 rounded-full" style="background:#00e59b; color:#06070d; border:none; cursor:pointer; font-weight:600;">Post</button>
+      </div>
+    </article>
+
+    <!-- ===== POST 3: POLL ===== -->
+    <article class="post-card fade-in" style="animation-delay:0.2s;">
+      <div class="p-5">
+        <div class="flex items-start gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-semibold text-white">arsenixc</span>
+              <span class="post-type poll"><i class="fas fa-poll"></i> Poll</span>
+            </div>
+            <p class="text-xs mt-0.5" style="color:#8b8ca8;">Jul 15, 2025 · <span style="color:#fbbf24;">Closed</span></p>
+          </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-white mb-1">What should my next series focus on?</h2>
+        <p class="text-sm mb-4" style="color:#8b8ca8;">Help me decide my next major project — I'll be spending at least 3 months on it! Total: 2,847 votes</p>
+
+        <!-- Poll Options -->
+        <div class="space-y-2 mb-4" id="poll-options">
+          <div class="poll-option voted" data-pct="44" onclick="vote(this)">
+            <div class="poll-bar" style="width:44%;"></div>
+            <div class="poll-label"><span>🏙 Urban Night Scenes (Cyberpunk)</span><span class="poll-pct">44%</span></div>
+          </div>
+          <div class="poll-option" data-pct="28" onclick="vote(this)">
+            <div class="poll-bar" style="width:28%;"></div>
+            <div class="poll-label"><span>🌸 Traditional Japanese Landscapes</span><span class="poll-pct">28%</span></div>
+          </div>
+          <div class="poll-option" data-pct="18" onclick="vote(this)">
+            <div class="poll-bar" style="width:18%;"></div>
+            <div class="poll-label"><span>🧝 Character Illustration Series</span><span class="poll-pct">18%</span></div>
+          </div>
+          <div class="poll-option" data-pct="10" onclick="vote(this)">
+            <div class="poll-bar" style="width:10%;"></div>
+            <div class="poll-label"><span>🌌 Sci-Fi Space Environments</span><span class="poll-pct">10%</span></div>
+          </div>
+        </div>
+
+        <p class="text-xs" style="color:#8b8ca8;"><i class="fas fa-lock mr-1"></i> Poll closed · 2,847 votes · You voted: 🏙 Urban Night Scenes</p>
+
+        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t" style="border-color:#1a1b26;">
+          <button class="react-btn" onclick="toggleReact(this,'❤️',76)"><span>❤️</span> <span>76</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🤔',34)"><span>🤔</span> <span>34</span></button>
+          <button class="react-btn" onclick="showEmojiPicker(this)"><i class="fas fa-smile text-xs"></i> React</button>
+          <span class="ml-auto flex items-center gap-3">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 7.8K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 56</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4); color:#fff;">S</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">SkyArtist99</span><span class="pc-time">Jul 15, 2025</span></div>
+          <p class="pc-text">Voted cyberpunk! Can't wait to see more of those amazing night city scenes 🌃</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>9</button>
+        </div>
+      </div>
+
+      <div class="comment-bar">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <input type="text" placeholder="Write a comment..." />
+        <button class="text-sm px-3 py-1.5 rounded-full" style="background:#00e59b; color:#06070d; border:none; cursor:pointer; font-weight:600;">Post</button>
+      </div>
+    </article>
+
+    <!-- ===== POST 4: STATUS UPDATE ===== -->
+    <article class="post-card fade-in" style="animation-delay:0.28s;">
+      <div class="p-5">
+        <div class="flex items-start gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-semibold text-white">arsenixc</span>
+              <span class="post-type status"><i class="fas fa-circle" style="font-size:0.5rem;"></i> Status</span>
+            </div>
+            <p class="text-xs mt-0.5" style="color:#8b8ca8;">Jun 3, 2025</p>
+          </div>
+        </div>
+
+        <div class="post-content">
+          <p>Just finished a 3-month commercial project 😮‍💨 Can't share details yet but it was one of the most complex environment pieces I've ever done. Learned a ton about real-time lighting and baked GI workflows.</p>
+          <br/>
+          <p>Going to take a short break this week and then dive straight into personal work. Expect some new free pieces soon! 🎨✨</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t" style="border-color:#1a1b26;">
+          <button class="react-btn liked" onclick="toggleReact(this,'❤️',312)"><span>❤️</span> <span>312</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🎉',189)"><span>🎉</span> <span>189</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🔥',97)"><span>🔥</span> <span>97</span></button>
+          <button class="react-btn" onclick="showEmojiPicker(this)"><i class="fas fa-smile text-xs"></i> React</button>
+          <span class="ml-auto flex items-center gap-3">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 9.1K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 224</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#f59e0b,#10b981); color:#06070d;">G</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">GhibliDreams</span><span class="pc-time">Jun 3, 2025</span></div>
+          <p class="pc-text">So excited for your personal work!! Congrats on finishing the project 🎉</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>31</button>
+        </div>
+      </div>
+
+      <div class="comment-bar">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <input type="text" placeholder="Write a comment..." />
+        <button class="text-sm px-3 py-1.5 rounded-full" style="background:#00e59b; color:#06070d; border:none; cursor:pointer; font-weight:600;">Post</button>
+      </div>
+    </article>
+
+    <!-- ===== POST 5: TUTORIAL ===== -->
+    <article class="post-card fade-in" style="animation-delay:0.36s;">
+      <div class="p-5">
+        <div class="flex items-start gap-3 mb-4">
+          <img src="public/images/artist_avatar.jpg" alt="arsenixc" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+          <div class="flex-1">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-semibold text-white">arsenixc</span>
+              <span class="post-type tutorial"><i class="fas fa-graduation-cap"></i> Tutorial</span>
+            </div>
+            <p class="text-xs mt-0.5" style="color:#8b8ca8;">Mar 20, 2025 · <span>8 min read</span></p>
+          </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-white mb-2">How I Create Neon Reflections in My Environment Art</h2>
+
+        <div class="post-content mb-4">
+          <p>A lot of people ask how I achieve those wet-pavement neon reflection effects. Here's a quick breakdown of my workflow:</p>
+          <br/>
+          <p><strong>1. Base geometry</strong> — I model a flat plane with a subtle displacement for unevenness. The reflectivity shader is key here — I use a Glossiness value around 0.65-0.75 for that slightly blurred wet look.</p>
+          <br/>
+          <p><strong>2. Light placement</strong> — I place multiple area lights matching every neon sign color. Keeping them dim and letting the V-Ray GI do the heavy lifting gives the most realistic spread.</p>
+          <br/>
+          <p><strong>3. Post-processing</strong> — In Photoshop, I add a bloom layer (Screen blending, ~35% opacity) on top of all light sources, and a color grade with lifted blacks for that cinematic feel.</p>
+          <br/>
+          <p>Hope this helps! Feel free to ask questions in the comments 👇</p>
+        </div>
+
+        <!-- Tutorial image -->
+        <div class="rounded-lg overflow-hidden mb-4">
+          <img src="public/images/banner_hero.jpg" alt="Tutorial Result" class="w-full" style="max-height:300px; object-fit:cover;" />
+          <div class="px-3 py-2 text-xs" style="background:#1a1b26; color:#8b8ca8;">Final result — Konbini Street at Night</div>
+        </div>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:rgba(14,165,233,0.1); border:1px solid rgba(14,165,233,0.3); color:#38bdf8;">#tutorial</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#neonlighting</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#vray</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#environmentart</span>
+          <span class="text-xs px-2.5 py-1 rounded-full" style="background:#1a1b26; border:1px solid #2a2b3d; color:#8b8ca8;">#tips</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-4 border-t" style="border-color:#1a1b26;">
+          <button class="react-btn" onclick="toggleReact(this,'❤️',547)"><span>❤️</span> <span>547</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🔖',231)"><span>🔖</span> <span>231</span></button>
+          <button class="react-btn" onclick="toggleReact(this,'🙏',178)"><span>🙏</span> <span>178</span></button>
+          <button class="react-btn" onclick="showEmojiPicker(this)"><i class="fas fa-smile text-xs"></i> React</button>
+          <span class="ml-auto flex items-center gap-3">
+            <span class="stat-badge"><i class="fas fa-eye"></i> 28.4K</span>
+            <span class="stat-badge"><i class="fas fa-comment"></i> 318</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#f472b6,#a78bfa); color:#fff;">N</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">NeonBlush</span><span class="pc-time">Mar 20, 2025</span></div>
+          <p class="pc-text">This is exactly what I was looking for! The bloom layer tip is genius. Thank you so much! 🙏</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>47</button>
+        </div>
+      </div>
+      <div class="post-comment">
+        <div class="pc-avatar" style="background:linear-gradient(135deg,#0ea5e9,#14b8a6); color:#fff;">T</div>
+        <div class="pc-body">
+          <div class="pc-meta"><span class="pc-user">TatsumiArt</span><span class="pc-time">Mar 21, 2025</span></div>
+          <p class="pc-text">Would you ever do a full video tutorial? I'd pay for that 😅</p>
+          <button class="pc-like" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>38</button>
+        </div>
+      </div>
+
+      <div class="comment-bar">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <input type="text" placeholder="Write a comment..." />
+        <button class="text-sm px-3 py-1.5 rounded-full" style="background:#00e59b; color:#06070d; border:none; cursor:pointer; font-weight:600;">Post</button>
+      </div>
+    </article>
+
+    <!-- Load more -->
+    <div class="text-center py-6">
+      <button class="da-btn-outline px-10 py-3" id="load-more-btn" onclick="loadMore()">
+        <i class="fas fa-redo mr-2"></i> Load More Posts (42 remaining)
+      </button>
+    </div>
+
+  </div><!-- /left col -->
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="w-72 flex-shrink-0 hidden lg:block">
+
+    <!-- About mini -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">About the Artist</p>
+      <div class="flex items-center gap-3 mb-3">
+        <img src="public/images/artist_avatar.jpg" alt="" class="w-12 h-12 rounded-full object-cover border-2" style="border-color:#00e59b;" />
+        <div>
+          <p class="font-semibold text-white">arsenixc</p>
+          <p class="text-xs" style="color:#8b8ca8;">Environment Artist · 16yr member</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-2 mb-3">
+        <div class="text-center rounded-lg py-2" style="background:#1a1b26;">
+          <div class="text-sm font-bold text-white">47</div>
+          <div class="text-xs" style="color:#8b8ca8;">Posts</div>
+        </div>
+        <div class="text-center rounded-lg py-2" style="background:#1a1b26;">
+          <div class="text-sm font-bold text-white">67K</div>
+          <div class="text-xs" style="color:#8b8ca8;">Watchers</div>
+        </div>
+        <div class="text-center rounded-lg py-2" style="background:#1a1b26;">
+          <div class="text-sm font-bold text-white">467</div>
+          <div class="text-xs" style="color:#8b8ca8;">Artworks</div>
+        </div>
+      </div>
+      <button class="w-full da-btn-outline py-2 text-sm">View Full Profile</button>
+    </div>
+
+    <!-- Post types summary -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">Posts by Type</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background:#818cf8;"></span>
+            <span class="text-sm" style="color:#c8c8d8;">Journals</span>
+          </div>
+          <span class="text-sm font-semibold text-white">18</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background:#f472b6;"></span>
+            <span class="text-sm" style="color:#c8c8d8;">WIP Updates</span>
+          </div>
+          <span class="text-sm font-semibold text-white">12</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background:#00e59b;"></span>
+            <span class="text-sm" style="color:#c8c8d8;">Status Updates</span>
+          </div>
+          <span class="text-sm font-semibold text-white">9</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background:#38bdf8;"></span>
+            <span class="text-sm" style="color:#c8c8d8;">Tutorials</span>
+          </div>
+          <span class="text-sm font-semibold text-white">6</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background:#fbbf24;"></span>
+            <span class="text-sm" style="color:#c8c8d8;">Polls</span>
+          </div>
+          <span class="text-sm font-semibold text-white">2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular posts -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">Most Liked Posts</p>
+      <div class="space-y-3">
+        <a href="#" class="block group" style="text-decoration:none;">
+          <p class="text-sm text-white group-hover:text-green-400 transition-colors line-clamp-2" style="line-height:1.4;">How I Create Neon Reflections in My Environment Art</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-heart"></i> 547</span>
+            <span class="stat-badge"><i class="fas fa-eye"></i> 28.4K</span>
+          </div>
+        </a>
+        <div class="h-px" style="background:#1a1b26;"></div>
+        <a href="#" class="block group" style="text-decoration:none;">
+          <p class="text-sm text-white group-hover:text-green-400 transition-colors line-clamp-2" style="line-height:1.4;">Just finished a 3-month commercial project 😮‍💨</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-heart"></i> 312</span>
+            <span class="stat-badge"><i class="fas fa-eye"></i> 9.1K</span>
+          </div>
+        </a>
+        <div class="h-px" style="background:#1a1b26;"></div>
+        <a href="#" class="block group" style="text-decoration:none;">
+          <p class="text-sm text-white group-hover:text-green-400 transition-colors line-clamp-2" style="line-height:1.4;">New Konbini Project — Behind the Scenes 🏪</p>
+          <div class="flex gap-3 mt-1">
+            <span class="stat-badge"><i class="fas fa-heart"></i> 214</span>
+            <span class="stat-badge"><i class="fas fa-eye"></i> 11.3K</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tags cloud -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">Popular Tags</p>
+      <div class="flex flex-wrap gap-1.5">
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#environmentart</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#wip</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#tutorial</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#konbini</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#vray</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#announcement</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#3dsmax</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#copyright</a>
+        <a href="#" class="text-xs px-2.5 py-1 rounded-full border transition-colors" style="border-color:#2a2b3d; color:#8b8ca8;" onmouseover="this.style.borderColor='#00e59b';this.style.color='#00e59b'" onmouseout="this.style.borderColor='#2a2b3d';this.style.color='#8b8ca8'">#neonlighting</a>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#080910; border-top:1px solid #1a1b26;" class="mt-4">
+  <div class="max-w-screen-xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style="color:#8b8ca8;">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded flex items-center justify-center" style="background:#00e59b;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#06070d"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="text-white font-semibold">ArtGallery</span>
+      <span>© 2025 All rights reserved.</span>
+    </div>
+    <div class="flex gap-4">
+      <a href="#" class="hover:text-white transition-colors">Privacy</a>
+      <a href="#" class="hover:text-white transition-colors">Terms</a>
+      <a href="#" class="hover:text-white transition-colors">Help</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Filter pills
+  function setFilter(el) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // React button toggle
+  function toggleReact(btn, emoji, count) {
+    const active = btn.dataset.active === 'true';
+    btn.dataset.active = active ? 'false' : 'true';
+    const newCount = active ? count - 1 : count + 1;
+    btn.innerHTML = `<span>${emoji}</span> <span>${newCount}</span>`;
+    btn.classList.toggle('liked', !active);
+  }
+
+  // Simple emoji picker
+  const emojis = ['❤️','🔥','😮','🤩','👏','🎉','🙏','😂','💯','🌟','🔖','😭','👀','💎','🎨'];
+  function showEmojiPicker(triggerBtn) {
+    // Remove existing pickers
+    document.querySelectorAll('.emoji-picker-popup').forEach(p => p.remove());
+    const picker = document.createElement('div');
+    picker.className = 'emoji-picker-popup';
+    picker.style.cssText = 'position:absolute; background:#1a1b26; border:1px solid #2a2b3d; border-radius:10px; padding:8px; display:flex; flex-wrap:wrap; gap:2px; width:220px; z-index:50; box-shadow:0 8px 32px rgba(0,0,0,0.5);';
+    emojis.forEach(e => {
+      const b = document.createElement('button');
+      b.className = 'emoji-btn';
+      b.textContent = e;
+      b.onclick = () => { picker.remove(); };
+      picker.appendChild(b);
+    });
+    triggerBtn.style.position = 'relative';
+    triggerBtn.parentNode.style.position = 'relative';
+    triggerBtn.parentNode.appendChild(picker);
+    picker.style.bottom = '36px';
+    picker.style.left = '0';
+    setTimeout(() => document.addEventListener('click', () => picker.remove(), { once: true }), 0);
+  }
+
+  // Poll vote
+  function vote(option) {
+    const opts = document.querySelectorAll('.poll-option');
+    opts.forEach(o => o.classList.remove('voted'));
+    option.classList.add('voted');
+  }
+
+  // Add comment
+  function addComment(postBtn) {
+    const bar = postBtn.closest('.comment-bar');
+    const input = bar.querySelector('input');
+    const text = input.value.trim();
+    if (!text) return;
+    const article = bar.closest('article');
+    const newComment = document.createElement('div');
+    newComment.className = 'post-comment';
+    newComment.innerHTML = `
+      <div class="pc-avatar" style="background:linear-gradient(135deg,#00e59b,#0ea5e9); color:#06070d; width:30px; height:30px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem;">Y</div>
+      <div class="pc-body">
+        <div class="pc-meta"><span class="pc-user" style="font-size:0.8125rem; font-weight:600; color:#e8e8f0;">You</span><span class="pc-time" style="font-size:0.7rem; color:#8b8ca8;">Just now</span></div>
+        <p class="pc-text" style="font-size:0.8125rem; color:#c8c8d8; margin-top:0.2rem; line-height:1.5;">${text}</p>
+        <button class="pc-like" style="font-size:0.72rem; color:#8b8ca8; background:none; border:none; cursor:pointer; padding:0; margin-top:0.25rem;" onclick="this.style.color='#f43f5e'"><i class="fas fa-heart mr-1"></i>0</button>
+      </div>
+    `;
+    newComment.style.cssText = 'opacity:0; transform:translateY(8px); transition:all 0.3s;';
+    article.insertBefore(newComment, bar);
+    setTimeout(() => { newComment.style.opacity = '1'; newComment.style.transform = 'translateY(0)'; }, 10);
+    input.value = '';
+  }
+
+  // Load more
+  function loadMore() {
+    const btn = document.getElementById('load-more-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-redo mr-2"></i> Load More Posts (35 remaining)'; }, 1200);
+  }
+
+  // Scroll fade-in
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.style.animationPlayState = 'running'; }), { threshold: 0.05 });
+  document.querySelectorAll('.fade-in').forEach(el => { el.style.animationPlayState = 'paused'; obs.observe(el); });
+</script>
+</body>
+</html>
